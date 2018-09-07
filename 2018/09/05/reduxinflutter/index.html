@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态，并且在这个数据或者状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:  可以肯定的是，复杂度远远超过上图。">
+<meta name="description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:">
 <meta name="keywords" content="flutter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flutter中的Redux">
 <meta property="og:url" content="http://blogml.top/2018/09/05/reduxinflutter/index.html">
 <meta property="og:site_name" content="雁过有声">
-<meta property="og:description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态，并且在这个数据或者状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:  可以肯定的是，复杂度远远超过上图。">
+<meta property="og:description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s22.postimg.cc/jhuz8ep4x/hairy_tree.png">
-<meta property="og:updated_time" content="2018-09-05T13:39:11.520Z">
+<meta property="og:updated_time" content="2018-09-07T09:25:55.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flutter中的Redux">
-<meta name="twitter:description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态，并且在这个数据或者状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:  可以肯定的是，复杂度远远超过上图。">
+<meta name="twitter:description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:">
 <meta name="twitter:image" content="https://s22.postimg.cc/jhuz8ep4x/hairy_tree.png">
 
 
@@ -338,8 +338,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-09-05T21:39:11+08:00">
-                2018-09-05
+              <time title="更新于" itemprop="dateModified" datetime="2018-09-07T17:25:55+08:00">
+                2018-09-07
               </time>
             
           </span>
@@ -399,17 +399,30 @@
       
 
       
-        <p>  flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态，并且在这个数据或者状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:
-<a href="https://postimg.cc/image/k7drkrpod/" target="_blank" rel="noopener"><img src="https://s22.postimg.cc/jhuz8ep4x/hairy_tree.png" alt="hairy_tree.png"></a>
-可以肯定的是，复杂度远远超过上图。</p>
+        <p>  flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:</p>
 <a id="more"></a>
-<p>构造函数传递不太现实，所以官方有一种解决方案，就是使用InheritedWidget, 这样所有子Widget都可以通过context访问到这个Widget, 有没有更方便，更好管理点的？Reactive中有Redux，搜索了下，发现dart中也有<a href="https://pub.dartlang.org/packages/redux" target="_blank" rel="noopener">redux</a>的实现，flutter中也有基于这个Redux的<a href="https://pub.dartlang.org/packages/flutter_redux" target="_blank" rel="noopener">flutter_redux</a>, 添加了额外的组件，如StoreProvider，StoreBuilder，StoreConnector方便在flutter中使用。
+<p><a href="https://postimg.cc/image/k7drkrpod/" target="_blank" rel="noopener"><img src="https://s22.postimg.cc/jhuz8ep4x/hairy_tree.png" alt="hairy_tree.png"></a>
+可以肯定的是，实际项目复杂度远远超过上图，所以构造函数传递不太现实，而且会让Widget容易耦合到一起。
+官方有一种方案，就是使用InheritedWidget, 这样所有子Widget都可以通过context访问到这个Widget。有没有更方便，更好管理点的？Reactive中有Redux，搜索了下，发现dart中也有<a href="https://pub.dartlang.org/packages/redux" target="_blank" rel="noopener">redux</a>的实现，flutter中也有基于这个Redux的<a href="https://pub.dartlang.org/packages/flutter_redux" target="_blank" rel="noopener">flutter_redux</a>, 添加了额外的组件，如StoreProvider，StoreBuilder，StoreConnector方便在flutter中使用，只是基于语言特性上实现的一些模式，没有其它神秘的地方，比如StoreProvider就是一个InheritedWidget。
   Redux有两个特性可以解决上面的问题：</p>
 <ol>
 <li>app唯一的Store存着所有的状态，不管在哪里都可以访问，并且一个地方更新状态后，别外一个地方也可以得到通知。</li>
-<li>那这不就是一个增加了observer的单例，这个特性更重要：<strong>所有数据流是单向的</strong>, 状态是只读的：</li>
+<li>那这不就是一个增加了observer的单例，这个特性更重要：<strong>所有数据流是单向的</strong>, 状态是<em>只读</em>的：</li>
+<li>用户行为（如用户点击）</li>
+<li>Redux 分发一个<em>action</em></li>
+<li>Redux在<em>reducer</em>中更新<em>store</em>, 这个状态是新创建的。</li>
+<li>store更新后自动刷新widget</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">flow</span><br><span class="line">st=&gt;start: Start</span><br><span class="line">op=&gt;operation: Your Operation</span><br><span class="line">cond=&gt;condition: Yes or No?</span><br><span class="line">e=&gt;end</span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br></pre></td></tr></table></figure>
+<center>![redux-architecture-overview.png](https://s8.postimg.cc/acta0z30l/redux-architecture-overview.png)</center>
+可以看看这个[例子](https://gitlab.com/brianegan/flutter_architecture_samples/tree/master/example/redux)  
+<p>但是仍有些疑问：</p>
+<ul>
+<li>?如果要在action之后从外部获取数据怎么办？所以Redux又引入了middleware访问外部api，时机在Action和Reducer之间。</li>
+<li>?为什么是只读的，如果是只读的，那状态如果更新？
+Redux是通过创建副本的方法。为什么要这样做？方便比较两次数据是否更新，而且可以通过devtools去追踪状态历史记录，这点很强大。</li>
+<li>?问题又来了，如何创建副本才是简单的方式？
+这个似乎对dart来说没有一个简单的方式，反射方式是可行，但是复杂了点。google本身有个built_value库，也不是很好。不像js有immutable.js</li>
+</ul>
 
       
     </div>

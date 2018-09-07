@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="雁过有声">
 <meta property="og:description" content="坐地铁时在高速行驶的列车上看到稳定的广告觉得挺有意思，就思考了下实现的原理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2018/06/01/5b10dc0e776d4.jpg">
-<meta property="og:image" content="https://i.loli.net/2018/06/01/5b10dc0dec3c6.jpg">
-<meta property="og:updated_time" content="2018-07-21T05:08:58.947Z">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/0060lm7Tly1fv131avio9j30d809xgmj.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/0060lm7Tly1fv131av4scj309h05t0t1.jpg">
+<meta property="og:updated_time" content="2018-09-07T09:06:29.172Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="地铁移动广告原理的个人理解分析">
 <meta name="twitter:description" content="坐地铁时在高速行驶的列车上看到稳定的广告觉得挺有意思，就思考了下实现的原理。">
-<meta name="twitter:image" content="https://i.loli.net/2018/06/01/5b10dc0e776d4.jpg">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/0060lm7Tly1fv131avio9j30d809xgmj.jpg">
 
 
 
@@ -339,8 +339,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-07-21T13:08:58+08:00">
-                2018-07-21
+              <time title="更新于" itemprop="dateModified" datetime="2018-09-07T17:06:29+08:00">
+                2018-09-07
               </time>
             
           </span>
@@ -381,12 +381,12 @@
         <p>  坐地铁时在高速行驶的列车上看到稳定的广告觉得挺有意思，就思考了下实现的原理。</p>
 <a id="more"></a>
 <p>  我们都知道人眼有视觉暂留，当图像以24帧每秒显示时，看起来像一幅连续的画面。可以肯定的是这个地铁广告也是利用了这种视觉暂留效果。设想一幅广告画面就是按24帧每秒播放的画面，但是处于固定位置的广告箱肯定不是一直亮，不然列车运行后看起来就是糊的<br>
-  那么广告箱应该是按某一频率闪烁。计算一下：假设地铁速度是80km/h，约v≈ 22m/s，假设某一时刻整个广告箱亮（这个显示时间应该远远短于1/24秒），1/24秒后要在同上位置点亮下一个广告箱，但是此时行进了只有22/24 ≈ 0.916米？也就是说广告长度最多只有0.9多米长？但是广告往往都是大于这个长度的，怎么办？想到一种可能的办法就是拼接，也就是内容依次移动。下一个广告箱在1/24秒后显示上一个广告箱的内容。我用unity做了一个<a href="https://pan.baidu.com/s/1zRQsFM6kfwGpbO8Bo_QqUA" target="_blank" rel="noopener">模型</a>来还原这种情况，是可以实现。(有人能告诉我闪烁问题模拟怎么解决？)</p>
+  那么广告箱应该是按某一频率闪烁。计算一下：假设地铁速度是80km/h，约v≈ 22m/s，假设某一时刻整个广告箱亮（这个显示时间应该远远短于1/24秒），1/24秒后要在同上位置点亮下一个广告箱，但是此时行进了只有22/24 ≈ 0.916米？也就是说广告长度最多只有0.9多米长？但是广告往往都是大于这个长度的，怎么办？想到一种可能的办法就是拼接，也就是内容依次移动。下一个广告箱在1/24秒后显示上一个广告箱的内容。我用unity做了一个<a href="https://pan.baidu.com/s/1zRQsFM6kfwGpbO8Bo_QqUA" target="_blank" rel="noopener">模拟</a>来还原这种情况，是可以实现。</p>
 <p>  但是这个太费材料了，30秒广告需要安装30<em>22/0.9≈733块广告牌,总广告箱长度就是30</em>22=660米. 有没有省材料的方法？
-小时候都见过这种电视机：
-<a href="https://i.loli.net/2018/06/01/5b10dc0e776d4.jpg" target="_blank" rel="noopener"><img src="https://i.loli.net/2018/06/01/5b10dc0e776d4.jpg" alt="timg.jpg"></a><br>
-显像管采用逐行扫描的方式，一帧内扫描完整个屏幕形成一幅画面
-<a href="https://i.loli.net/2018/06/01/5b10dc0dec3c6.jpg" target="_blank" rel="noopener"><img src="https://i.loli.net/2018/06/01/5b10dc0dec3c6.jpg" alt="scanimage.jpg"></a><br>
+小时候都见过这种电视机：<br>
+<a href="http://wx1.sinaimg.cn/mw690/0060lm7Tly1fv131avio9j30d809xgmj.jpg" target="_blank" rel="noopener"><img src="http://wx1.sinaimg.cn/mw690/0060lm7Tly1fv131avio9j30d809xgmj.jpg" alt="timg.jpg"></a><br>
+显像管采用逐行扫描的方式，一帧内扫描完整个屏幕形成一幅画面:<br>
+<a href="http://wx3.sinaimg.cn/mw690/0060lm7Tly1fv131av4scj309h05t0t1.jpg" target="_blank" rel="noopener"><img src="http://wx3.sinaimg.cn/mw690/0060lm7Tly1fv131av4scj309h05t0t1.jpg" alt="scanimage.jpg"></a><br>
   如果安装一根竖直的灯管，当列车行进时，不停变换灯管上的“像素”,也在一帧内完成一幅图的扫描，同样以1.8米广告长度，24的帧率可以计算一下：
 广告条在一帧内移动距离也为0.9米，所以条的间距为0.9米。这里还有个条宽和显示时间问题，假设条宽为x，移动自身宽度时间为x/22，假设条宽为0.2米，则这个时间为0.0091秒，而显示时间和上面的静态帧一样，也应该是非常快，不会超过这个宽x/22。拼接的原理和上面一样，但是控制要复杂一些。这样计算的灯带个数：(22*30 + 0.9) / 1.1 = 600, 材料长度为120米。</p>
 

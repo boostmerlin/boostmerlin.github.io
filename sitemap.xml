@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blogml.top/about/index.html</loc>
+    
+    <lastmod>2018-10-16T01:45:08.775Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blogml.top/2018/09/05/reduxinflutter/</loc>
     
-    <lastmod>2018-09-12T01:17:44.358Z</lastmod>
+    <lastmod>2018-09-21T14:32:52.240Z</lastmod>
     
   </url>
   
@@ -38,13 +45,6 @@
   
   <url>
     <loc>http://blogml.top/2018/02/01/reactivex/</loc>
-    
-    <lastmod>2018-04-14T06:07:11.469Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogml.top/about/index.html</loc>
     
     <lastmod>2018-04-14T06:07:11.469Z</lastmod>
     

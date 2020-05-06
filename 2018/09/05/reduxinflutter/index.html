@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s22.postimg.cc/jhuz8ep4x/hairy_tree.png">
 <meta property="og:image" content="https://s8.postimg.cc/acta0z30l/redux-architecture-overview.png">
-<meta property="og:updated_time" content="2018-09-12T01:17:44.358Z">
+<meta property="og:updated_time" content="2018-09-21T14:32:52.240Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flutter中的Redux">
 <meta name="twitter:description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:">
@@ -164,7 +164,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">A Tiger in me sniffs roses</p>
+        <h1 class="site-subtitle" itemprop="description">A Tiger in me sniffs roses</h1>
       
   </div>
 
@@ -190,16 +190,6 @@
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
           </a>
         </li>
       
@@ -311,7 +301,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Flutter中的Redux</h1>
+          <h2 class="post-title" itemprop="name headline">Flutter中的Redux</h2>
         
 
         <div class="post-meta">
@@ -339,8 +329,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-09-12T09:17:44+08:00">
-                2018-09-12
+              <time title="更新于" itemprop="dateModified" datetime="2018-09-21T22:32:52+08:00">
+                2018-09-21
               </time>
             
           </span>
@@ -422,7 +412,8 @@
 <li>?为什么是只读的，如果是只读的，那状态如果更新？
 Redux是通过创建副本的方法。为什么要这样做？方便比较两次数据是否更新，flutter_redux有个标记：distinct可以开启这个功能。而且可以通过devtools去追踪状态历史记录，这点很强大。</li>
 <li>?问题又来了，如何创建副本才是简单的方式？
-这个似乎对dart来说没有一个简单的方式，看到的例子都是手工编码。google本身有个built_value库，感觉也不是很适合。不像js有immutable.js</li>
+这个似乎对dart来说没有一个简单的方式，看到的例子都是手工编码。google本身有个built_value库，使用自动代码生成的方式，但仍不如js有immutable.js那样方便。
+<strong>实际使用中redux有个坑，就是当appstate改变时，所有StoreBuilder和StoreConnector都会重构，方法是不要使用StoreBuilder,并把StoreConnector的distinct设为true，实现ViewModel的==</strong></li>
 </ul>
 
       
@@ -549,7 +540,7 @@ Redux是通过创建副本的方法。为什么要这样做？方便比较两次
                 alt="Merlin" />
             
               <p class="site-author-name" itemprop="name">Merlin</p>
-              <p class="site-description motion-element" itemprop="description">愿此时平淡，愿彼时灿烂</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
           <nav class="site-state motion-element">
@@ -626,7 +617,7 @@ Redux是通过创建副本的方法。为什么要这样做？方便比较两次
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -647,7 +638,7 @@ Redux是通过创建副本的方法。为什么要这样做？方便比较两次
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="site-uv">

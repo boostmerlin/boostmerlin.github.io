@@ -2,23 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blogml.top/about/index.html</loc>
+    <loc>http://blogml.top/2020/07/01/new-in-py3/</loc>
     
-    <lastmod>2018-10-16T01:45:08.775Z</lastmod>
+    <lastmod>2020-07-01T06:37:45.623Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blogml.top/2018/09/05/reduxinflutter/</loc>
     
-    <lastmod>2018-09-21T14:32:52.240Z</lastmod>
+    <lastmod>2020-07-01T05:06:24.479Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blogml.top/2018/06/02/metroads/</loc>
     
-    <lastmod>2018-09-07T09:06:29.172Z</lastmod>
+    <lastmod>2020-07-01T05:03:56.812Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogml.top/about/index.html</loc>
+    
+    <lastmod>2018-10-16T01:45:08.775Z</lastmod>
     
   </url>
   

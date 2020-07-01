@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. f-string 字符串插值 传统字符串格式化是使用%， python2.6 后引入了format提供了更强大，灵活的控制。python3 开始提供了字符串插值的方法，更加方便，清晰。这种方式在其它语言中并不陌生。 12345a = &quot;Peeter&quot;b = 50s = &quot;&amp;#123;0&amp;#125; has &amp;#123;1:.2f&amp;#125; kg&quot;.format(a, b)s2 = f&quot;&amp;#">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python3 新特性总结">
+<meta property="og:url" content="http://blogml.top/2020/07/01/new-in-py3/index.html">
+<meta property="og:site_name" content="雁过有声">
+<meta property="og:description" content="1. f-string 字符串插值 传统字符串格式化是使用%， python2.6 后引入了format提供了更强大，灵活的控制。python3 开始提供了字符串插值的方法，更加方便，清晰。这种方式在其它语言中并不陌生。 12345a = &quot;Peeter&quot;b = 50s = &quot;&amp;#123;0&amp;#125; has &amp;#123;1:.2f&amp;#125; kg&quot;.format(a, b)s2 = f&quot;&amp;#">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-01T06:37:45.623Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python3 新特性总结">
+<meta name="twitter:description" content="1. f-string 字符串插值 传统字符串格式化是使用%， python2.6 后引入了format提供了更强大，灵活的控制。python3 开始提供了字符串插值的方法，更加方便，清晰。这种方式在其它语言中并不陌生。 12345a = &quot;Peeter&quot;b = 50s = &quot;&amp;#123;0&amp;#125; has &amp;#123;1:.2f&amp;#125; kg&quot;.format(a, b)s2 = f&quot;&amp;#">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'EGI418VMZI',
+      apiKey: 'f68698a0ad1f2307428f6c530453ee56',
+      indexName: 'prod_blogml',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blogml.top/2020/07/01/new-in-py3/"/>
+
+
+
+
+
+  <title>python3 新特性总结 | 雁过有声</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">雁过有声</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">A Tiger in me sniffs roses</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blogml.top/2020/07/01/new-in-py3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Merlin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雁过有声">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">python3 新特性总结</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-01T13:30:59+08:00">
+                2020-07-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-07-01T14:37:45+08:00">
+                2020-07-01
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-f-string-字符串插值">1. f-string 字符串插值</h2>
+<p>传统字符串格式化是使用%， python2.6 后引入了format提供了更强大，灵活的控制。python3 开始提供了字符串插值的方法，更加方便，清晰。这种方式在其它语言中并不陌生。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">"Peeter"</span></span><br><span class="line">b = <span class="number">50</span></span><br><span class="line">s = <span class="string">"&#123;0&#125; has &#123;1:.2f&#125; kg"</span>.format(a, b)</span><br><span class="line"></span><br><span class="line">s2 = <span class="string">f"<span class="subst">&#123;a&#125;</span> has <span class="subst">&#123;b:<span class="number">.2</span>f&#125;</span> kg"</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="2-类型提示-python3-5">2. 类型提示(python3.5)</h2>
+<p>在代码提示和可读性上很有帮助<br>
+a. 变量定义</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x:int = <span class="number">10</span></span><br><span class="line">y:str = <span class="string">'hello'</span></span><br><span class="line">c:list = []</span><br></pre></td></tr></table></figure>
+<p>b. 函数定义</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x:int,y:int)</span>-&gt;int:</span></span><br><span class="line">    <span class="keyword">return</span> x+y</span><br><span class="line"></span><br><span class="line">print(add(<span class="number">10</span>,<span class="number">12</span>))</span><br><span class="line">print(add(<span class="string">'hello'</span>,<span class="string">'world'</span>)) <span class="comment"># ”编译“不会出错</span></span><br></pre></td></tr></table></figure>
+<p>类型提示并不能在运行时做类型检查</p>
+<h2 id="3-枚举提供了另一种定义常量的方法-python-3-4">3. 枚举提供了另一种定义常量的方法(python 3.4)</h2>
+<p>Enum模块定义了四个枚举类，它们可被用来定义名称和值的不重复集合: Enum, IntEnum, Flag 和 IntFlag。 此外还定义了一个装饰器 unique() 和一个辅助类 auto</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> enum <span class="keyword">import</span> Enum, auto</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Color</span><span class="params">(Enum)</span>:</span></span><br><span class="line">    RED = auto()</span><br><span class="line">    GREEN = auto()</span><br><span class="line">    BLUE = auto()</span><br><span class="line">print(Color.Red) <span class="comment">#Color.RED</span></span><br><span class="line">print(repr(Color.RED)) <span class="comment"># &lt;Color.RED: 1&gt;</span></span><br><span class="line"><span class="keyword">for</span> c  <span class="keyword">in</span> Color:</span><br><span class="line">    print(c)</span><br></pre></td></tr></table></figure>
+<h2 id="4-data-class-装饰器-python-3-7">4. Data class 装饰器 (python 3.7+)</h2>
+<p>减少样板代码，熟悉java spring的一定对@Data注解不默生。装饰器会自动生成诸如__init__和__repr__这样的特殊方法</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dataclass <span class="keyword">import</span> dataclass</span><br><span class="line"><span class="meta">@dataclass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Square</span>:</span></span><br><span class="line">    w: float</span><br><span class="line">    h: float</span><br><span class="line">    desc: str</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">area</span><span class="params">(self)</span>-&gt;float:</span></span><br><span class="line">        <span class="keyword">return</span> w*h</span><br><span class="line"></span><br><span class="line">s = Square(<span class="number">5.2</span>, <span class="number">2</span>, <span class="string">'a square'</span>)</span><br><span class="line">print(s)</span><br><span class="line">print(s.area())</span><br></pre></td></tr></table></figure>
+<h2 id="5-扩展的可迭代对象解包">5. 扩展的可迭代对象解包</h2>
+<p>es6 中有解构这个特性，算是一个不完整的版本。使用*x表示余下的迭代对象</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">head, *body, tail = range(<span class="number">5</span>)</span><br><span class="line">print(head, body, tail)</span><br><span class="line"><span class="comment"># 0 [1, 2, 3] 4</span></span><br><span class="line"></span><br><span class="line">first, _, third, *_ = range(<span class="number">5</span>)</span><br><span class="line">print(first, third)</span><br><span class="line"></span><br><span class="line">seq = range(<span class="number">5</span>)</span><br><span class="line">first, rest = seq[<span class="number">0</span>], seq[<span class="number">1</span>:]</span><br><span class="line">first, *rest = seq</span><br></pre></td></tr></table></figure>
+<h2 id="6-lru-缓存-python3-2">6. LRU 缓存 (python3.2)</h2>
+<p>使用functools模块的lur_cache装饰器，可以缓存最多 maxsize 个此函数的调用结果，从而提高程序执行的效率，特别适合于耗时的函数。参数maxsize为最多缓存的次数，如果为None，则无限制。如果 typed=True，则不同参数类型的调用将分别缓存，例如 f(3) 和 f(3.0)。
+被 lru_cache 装饰的函数会有 cache_clear 和 cache_info 两个方法，分别用于清除缓存和查看缓存信息。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache(maxsize=6)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    print(<span class="string">f"calc <span class="subst">&#123;x&#125;</span> + <span class="subst">&#123;y&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">print(add(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">print(add(<span class="number">1</span>, <span class="number">2</span>)) <span class="comment"># 第二次调用直接返回</span></span><br><span class="line">print(add(<span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">print(add.cache_info())</span><br><span class="line"><span class="comment">#CacheInfo(hits=1, misses=2, maxsize=6, currsize=1)</span></span><br><span class="line">add.cache_clear()</span><br><span class="line">print(type(add)) <span class="comment"># &lt;class 'functools._lru_cache_wrapper'&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="7-pathlib-python3-4">7. pathlib (python3.4)</h2>
+<p><a href="https://treyhunner.com/2018/12/why-you-should-be-using-pathlib/" target="_blank" rel="noopener">可以更好操作路径了</a></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os.path</span><br><span class="line"></span><br><span class="line">BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))</span><br><span class="line">TEMPLATES_DIR = os.path.join(BASE_DIR, <span class="string">'templates'</span>)</span><br></pre></td></tr></table></figure>
+<p>vs</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line">BASE_DIR = Path(__file__).resolve().parent.parent</span><br><span class="line">TEMPLATES_DIR = BASE_DIR.joinpath(<span class="string">'templates'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> os.path</span><br><span class="line"></span><br><span class="line">os.makedirs(os.path.join(<span class="string">'src'</span>, <span class="string">'__pypackages__'</span>), exist_ok=<span class="keyword">True</span>)</span><br><span class="line">os.rename(<span class="string">'.editorconfig'</span>, os.path.join(<span class="string">'src'</span>, <span class="string">'.editorconfig'</span>))</span><br></pre></td></tr></table></figure>
+<p>vs</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line">Path(<span class="string">'src/__pypackages__'</span>).mkdir(parents=<span class="keyword">True</span>, exist_ok=<span class="keyword">True</span>)</span><br><span class="line">Path(<span class="string">'.editorconfig'</span>).rename(<span class="string">'src/.editorconfig'</span>)</span><br><span class="line"><span class="comment"># 不必关心是/ 还是\</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Merlin
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blogml.top/2020/07/01/new-in-py3/" title="python3 新特性总结">http://blogml.top/2020/07/01/new-in-py3/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/05/reduxinflutter/" rel="next" title="Flutter中的Redux">
+                <i class="fa fa-chevron-left"></i> Flutter中的Redux
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMjUyNy85MDg4"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Merlin" />
+            
+              <p class="site-author-name" itemprop="name">Merlin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-f-string-字符串插值"><span class="nav-number">1.</span> <span class="nav-text">1. f-string 字符串插值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-类型提示-python3-5"><span class="nav-number">2.</span> <span class="nav-text">2. 类型提示(python3.5)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-枚举提供了另一种定义常量的方法-python-3-4"><span class="nav-number">3.</span> <span class="nav-text">3. 枚举提供了另一种定义常量的方法(python 3.4)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-data-class-装饰器-python-3-7"><span class="nav-number">4.</span> <span class="nav-text">4. Data class 装饰器 (python 3.7+)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-扩展的可迭代对象解包"><span class="nav-number">5.</span> <span class="nav-text">5. 扩展的可迭代对象解包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-lru-缓存-python3-2"><span class="nav-number">6.</span> <span class="nav-text">6. LRU 缓存 (python3.2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-pathlib-python3-4"><span class="nav-number">7.</span> <span class="nav-text">7. pathlib (python3.4)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powerd by <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">Next</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

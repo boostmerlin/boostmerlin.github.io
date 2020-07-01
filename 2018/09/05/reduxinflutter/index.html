@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="雁过有声">
 <meta property="og:description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://s22.postimg.cc/jhuz8ep4x/hairy_tree.png">
-<meta property="og:image" content="https://s8.postimg.cc/acta0z30l/redux-architecture-overview.png">
-<meta property="og:updated_time" content="2018-09-21T14:32:52.240Z">
+<meta property="og:image" content="https://wx1.sbimg.cn/2020/07/01/2z8rw.md.png">
+<meta property="og:image" content="https://wx1.sbimg.cn/2020/07/01/2znGG.png">
+<meta property="og:updated_time" content="2020-07-01T05:06:24.479Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flutter中的Redux">
 <meta name="twitter:description" content="flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:">
-<meta name="twitter:image" content="https://s22.postimg.cc/jhuz8ep4x/hairy_tree.png">
+<meta name="twitter:image" content="https://wx1.sbimg.cn/2020/07/01/2z8rw.md.png">
 
 
 
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-09-21T22:32:52+08:00">
-                2018-09-21
+              <time title="更新于" itemprop="dateModified" datetime="2020-07-01T13:06:24+08:00">
+                2020-07-01
               </time>
             
           </span>
@@ -392,7 +392,7 @@
       
         <p>  flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:</p>
 <a id="more"></a>
-<p><a href="https://postimg.cc/image/k7drkrpod/" target="_blank" rel="noopener"><img src="https://s22.postimg.cc/jhuz8ep4x/hairy_tree.png" alt="hairy_tree.png"></a>
+<p><a href="https://sbimg.cn/image/2z8rw" target="_blank" rel="noopener"><img src="https://wx1.sbimg.cn/2020/07/01/2z8rw.md.png" alt="2z8rw.md.png"></a>
 可以肯定的是，实际项目复杂度远远超过上图，所以构造函数传递不太现实，而且会让Widget容易耦合到一起。
 官方有一种方案，就是使用InheritedWidget, 这样所有子Widget都可以通过context访问到这个Widget。有没有更方便，更好管理点的？Reactive中有Redux，搜索了下，发现dart中也有<a href="https://pub.dartlang.org/packages/redux" target="_blank" rel="noopener">redux</a>的实现，flutter中也有基于这个Redux的<a href="https://pub.dartlang.org/packages/flutter_redux" target="_blank" rel="noopener">flutter_redux</a>, 添加了额外的组件，如StoreProvider，StoreBuilder，StoreConnector方便在flutter中使用，只是基于语言特性上实现的一些模式，没有其它神秘的地方，比如StoreProvider就是一个InheritedWidget。
   Redux有两个特性可以解决上面的问题：</p>
@@ -404,7 +404,7 @@
 <li>Redux在<em>reducer</em>中更新<em>store</em>, 这个状态是新创建的。</li>
 <li>store更新后自动刷新widget</li>
 </ol>
-<p><img src="https://s8.postimg.cc/acta0z30l/redux-architecture-overview.png" alt="redux-architecture-overview.png"><br>
+<p><img src="https://wx1.sbimg.cn/2020/07/01/2znGG.png" alt="2znGG.png">
 可以看看这个<a href="https://gitlab.com/brianegan/flutter_architecture_samples/tree/master/example/redux" target="_blank" rel="noopener">例子</a></p>
 <p>但是仍有些疑问：</p>
 <ul>
@@ -472,6 +472,10 @@ Redux是通过创建副本的方法。为什么要这样做？方便比较两次
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/01/new-in-py3/" rel="prev" title="python3 新特性总结">
+                python3 新特性总结 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -550,7 +554,7 @@ Redux是通过创建副本的方法。为什么要这样做？方便比较两次
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

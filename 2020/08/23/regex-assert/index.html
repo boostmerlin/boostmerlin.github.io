@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blogml.top","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"4MV5SQ57KZ","apiKey":"69a596a1913b1c3fc1bddf4e25d90d7c","indexName":"prod_blogml","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="断言属于Group constructs，但是不匹配具体的东西，所以也被称为零宽断言。他们用来指定一个位置，为这个断言为真时才继续进行匹配。 捕获型匹配 (...) 匹配括号中的内容 (a|b) 匹配a或者b (?&lt;name&gt;...), 同上但是为分组取一个名字，当分组很多时为分组取一个名字很有用。注：在golang,python中为(?P&lt;name&gt;...) 以上匹配都会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正则表达式中的断言">
+<meta property="og:url" content="http://blogml.top/2020/08/23/regex-assert/index.html">
+<meta property="og:site_name" content="雁过有声">
+<meta property="og:description" content="断言属于Group constructs，但是不匹配具体的东西，所以也被称为零宽断言。他们用来指定一个位置，为这个断言为真时才继续进行匹配。 捕获型匹配 (...) 匹配括号中的内容 (a|b) 匹配a或者b (?&lt;name&gt;...), 同上但是为分组取一个名字，当分组很多时为分组取一个名字很有用。注：在golang,python中为(?P&lt;name&gt;...) 以上匹配都会">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-23T01:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-23T01:00:00.000Z">
+<meta property="article:author" content="Merlin">
+<meta property="article:tag" content="正则表达式">
+<meta property="article:tag" content="断言">
+<meta property="article:tag" content="环视">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blogml.top/2020/08/23/regex-assert/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>正则表达式中的断言 | 雁过有声</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">雁过有声</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">A Tiger in me sniffs roses</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blogml.top/2020/08/23/regex-assert/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Merlin">
+      <meta itemprop="description" content="愿此时平淡，愿彼时灿烂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雁过有声">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          正则表达式中的断言
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-23 09:00:00" itemprop="dateCreated datePublished" datetime="2020-08-23T09:00:00+08:00">2020-08-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/computer/" itemprop="url" rel="index"><span itemprop="name">computer</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>断言属于<code>Group constructs</code>，但是不匹配具体的东西，所以也被称为零宽断言。他们用来指定一个位置，为这个断言为真时才继续进行匹配。</p>
+<h2 id="捕获型匹配">捕获型匹配</h2>
+<p>(...) 匹配括号中的内容<br>
+(a|b) 匹配a或者b<br>
+(?&lt;name&gt;...), 同上但是为分组取一个名字，当分组很多时为分组取一个名字很有用。注：在golang,python中为<code>(?P&lt;name&gt;...)</code>
+以上匹配都会占用匹配位置，并生成分组，正则表达式内可以通过\1,\2,\3 or \k&lt;name&gt; 来引用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;aabcab&quot;</span>.match(<span class="regexp">/(a)\1/</span>) <span class="comment">//[&quot;aa&quot;, &quot;a&quot;, index: 0, input: &quot;aabcab&quot;, groups: undefined]</span></span><br></pre></td></tr></table></figure>
+<p>(?:...) 匹配...内容，和(...)一样。但是不捕获分组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;foobar&quot;</span>.match(<span class="regexp">/foo(?:ab|bar)/</span>) <span class="comment">//[&quot;foobar&quot;, index: 0, input: &quot;foobar&quot;, groups: undefined]</span></span><br></pre></td></tr></table></figure>
+<h2 id="断言">断言</h2>
+<ol>
+<li>(?=...) 正向先行断言（positive lookahead）</li>
+</ol>
+<p>当执行匹配时，当该断言表达式如果为真（positive)，则匹配断言前面（lookahead）的内容。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/foo(?=bar)/.exec(<span class="string">&quot;foobar&quot;</span>)</span><br><span class="line"><span class="comment">//[&quot;foo&quot;, index: 0, input: &quot;foobar&quot;, groups: undefined]</span></span><br><span class="line">/foo(?=bar)bar/.exec(<span class="string">&quot;foobar&quot;</span>)</span><br><span class="line"><span class="comment">//[&quot;foobar&quot;, index: 0, input: &quot;foobar&quot;, groups: undefined]</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>(?&lt;=...) 正向后发断言（positive lookbehind）</li>
+</ol>
+<p>和前一个相反，当该断言表达式如果为真（positive)，则匹配断言后边（lookbehind）的内容。注意断言表达式写在左边，从断言表达式往后看。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/(?&lt;=foo)bar/.exec(<span class="string">&quot;foobar&quot;</span>)</span><br><span class="line"><span class="comment">//[&quot;bar&quot;, index: 3, input: &quot;foobar&quot;, groups: undefined]</span></span><br><span class="line"></span><br><span class="line">/(?&lt;=foo)bar/.exec(<span class="string">&quot;foubar&quot;</span>)</span><br><span class="line"><span class="comment">//null</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>(?!...) 负向先行断言 (negative lookahead)</li>
+</ol>
+<p>当执行匹配时，当该断言表达式如果为假（negative），则匹配断言前面的内容。注意断言表达写在右边，即从断言表达式往前看。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/foo(?!bar)/.exec(<span class="string">&quot;foobar&quot;</span>)</span><br><span class="line"><span class="comment">//null</span></span><br><span class="line"></span><br><span class="line">/foo(?!bar)/.exec(<span class="string">&quot;foobaz&quot;</span>)</span><br><span class="line"><span class="comment">//[&quot;foo&quot;, index: 0, input: &quot;foobaz&quot;, groups: undefined]</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>(?&lt;!...) 负向后发断言 (negative lookbehind)</li>
+</ol>
+<p>当执行匹配时，往前查看断言表达式，如果为假（negative）， 则匹配断言后面的内容，亦即匹配表达左侧断言是否为假。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag"># 正则表达式</a>
+              <a href="/tags/%E6%96%AD%E8%A8%80/" rel="tag"># 断言</a>
+              <a href="/tags/%E7%8E%AF%E8%A7%86/" rel="tag"># 环视</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/01/new-in-py3/" rel="prev" title="python3 新特性总结">
+      <i class="fa fa-chevron-left"></i> python3 新特性总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7%E5%9E%8B%E5%8C%B9%E9%85%8D"><span class="nav-number">1.</span> <span class="nav-text">捕获型匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%AD%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">断言</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Merlin"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Merlin</p>
+  <div class="site-description" itemprop="description">愿此时平淡，愿彼时灿烂</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

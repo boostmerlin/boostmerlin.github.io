@@ -173,6 +173,77 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blogml.top/2022/03/06/python-import/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="BoostMerlin">
+      <meta itemprop="description" content="愿此时平淡，愿彼时灿烂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雁过有声">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/06/python-import/" class="post-title-link" itemprop="url">python中的包和导入</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-06 09:06:42 / 修改时间：11:45:42" itemprop="dateCreated datePublished" datetime="2022-03-06T09:06:42+08:00">2022-03-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>python使用包（package）、模块（module）来组织代码，以便于维护和管理。<br>使用关键字import来导入模块。导入要指定搜索路径，即从何处搜索模块。<br>Python搜索模块路径是由四部分构成的：</p>
+<ul>
+<li>程序的主目录: 执行文件的目录，即<code>__main__</code>文件的目录。</li>
+<li>PATHONPATH目录：环境变量，可以设置或扩展它。</li>
+<li>标准目录：DLLS, Lib, site-packages目录。</li>
+<li>.pth文件的目录: 可以放在python安装目录或site-packages中。每行一个路径<br>最后这4部分的路径都存储在sys.path列表中。<br>因此也可以在代码中使用sys.path.add(“/path/to/module”)来添加自定义搜索路径。</li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/06/python-import/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://blogml.top/2021/05/16/cg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -855,88 +926,6 @@ sock 权限问题</p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blogml.top/2018/01/04/numpy-ndarray-axis/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="BoostMerlin">
-      <meta itemprop="description" content="愿此时平淡，愿彼时灿烂">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雁过有声">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/01/04/numpy-ndarray-axis/" class="post-title-link" itemprop="url">numpy中轴的理解</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-01-04 19:44:36" itemprop="dateCreated datePublished" datetime="2018-01-04T19:44:36+08:00">2018-01-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-06-24 21:25:48" itemprop="dateModified" datetime="2018-06-24T21:25:48+08:00">2018-06-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/computer/" itemprop="url" rel="index"><span itemprop="name">computer</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>  最近学numpy中的ndarray，许多函数如np.mean, np.sum, np.min等都有个axis的参数，那什么是轴呢？
-其实就是数组的维度，对应ndarray.ndim的值， 也即ndarray.shape的len.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/01/04/numpy-ndarray-axis/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1008,7 +997,7 @@ sock 权限问题</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1018,7 +1007,7 @@ sock 权限问题</p>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1045,7 +1034,7 @@ sock 权限问题</p>
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

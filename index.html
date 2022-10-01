@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.1.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -173,6 +173,72 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blogml.top/2022/10/01/exception-for-langs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="BoostMerlin">
+      <meta itemprop="description" content="愿此时平淡，愿彼时灿烂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雁过有声">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/01/exception-for-langs/" class="post-title-link" itemprop="url">异常中的finally</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-10-01 09:06:29 / 修改时间：10:28:28" itemprop="dateCreated datePublished" datetime="2022-10-01T09:06:29+08:00">2022-10-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>异常处理中，在捕获异常后还可以再次抛出异常，也可以在catch中return，那在finally中是否还可以再次抛出异常、是否可以return，下面是测试几种常用语言的结果总结  </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/01/exception-for-langs/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://blogml.top/2022/03/06/python-import/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -217,7 +283,7 @@
 <li>程序的主目录: 执行文件的目录，即<code>__main__</code>文件的目录。</li>
 <li>PATHONPATH目录：环境变量，可以设置或扩展它。</li>
 <li>标准目录：DLLS, Lib, site-packages目录。</li>
-<li>.pth文件的目录: 可以放在python安装目录或site-packages中。每行一个路径<br>最后这4部分的路径都存储在sys.path列表中。<br>因此也可以在代码中使用sys.path.add(“/path/to/module”)来添加自定义搜索路径。</li></ul>
+<li>.pth文件的目录: 可以放在python安装目录或site-packages中。每行一个路径<br>最后这4部分的路径都存储在sys.path列表中。<br>因此也可以在代码中使用sys.path.add(“&#x2F;path&#x2F;to&#x2F;module”)来添加自定义搜索路径。</li></ul>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/03/06/python-import/#more" rel="contents">
@@ -363,13 +429,13 @@
 <li>停止服务</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld stop or systemctl stop mysqld.service</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
 <li>启动服务，不检查授权表</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --skip-grant-tables --skip-networking &amp;</span><br></pre></td></tr></table></figure>
-<p>报错：
-sock 权限问题</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R mysql:mysql /var/lib/mysql/</span><br></pre></td></tr></table></figure>
+<p>报错：<br>sock 权限问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /var/lib/mysql/</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/12/12/mysql-reset-pass/#more" rel="contents">
@@ -443,12 +509,8 @@ sock 权限问题</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>  断言属于<code>Group constructs</code>，但是不匹配具体的东西，所以也被称为零宽断言。他们用来指定一个位置，为这个断言为真时才继续进行匹配。</p>
-<h2 id="捕获型匹配">捕获型匹配</h2>
-<p>(...) 匹配括号中的内容<br>
-(a|b) 匹配a或者b<br>
-(?&lt;name&gt;...), 同上但是为分组取一个名字，当分组很多时为分组取一个名字很有用。注：在golang,python中为<code>(?P&lt;name&gt;...)</code>
-以上匹配都会占用匹配位置，并生成分组，正则表达式内可以通过\1,\2,\3 or \k&lt;name&gt; 来引用</p>
+          <p>&amp;emsp;&amp;emsp;断言属于<code>Group constructs</code>，但是不匹配具体的东西，所以也被称为零宽断言。他们用来指定一个位置，为这个断言为真时才继续进行匹配。  </p>
+<h2 id="捕获型匹配"><a href="#捕获型匹配" class="headerlink" title="捕获型匹配"></a>捕获型匹配</h2><p>(…) 匹配括号中的内容<br>(a|b) 匹配a或者b<br>(?&lt;name&gt;…), 同上但是为分组取一个名字，当分组很多时为分组取一个名字很有用。注：在golang,python中为<code>(?P&lt;name&gt;...)</code><br>以上匹配都会占用匹配位置，并生成分组，正则表达式内可以通过\1,\2,\3 or \k&lt;name&gt; 来引用</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/23/regex-assert/#more" rel="contents">
@@ -514,9 +576,8 @@ sock 权限问题</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-f-string-字符串插值">1. f-string 字符串插值</h2>
-<p>传统字符串格式化是使用%， python2.6 后引入了format提供了更强大，灵活的控制。python3 开始提供了字符串插值的方法，更加方便，清晰。这种方式在其它语言中并不陌生。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&quot;Peeter&quot;</span></span><br><span class="line">b = <span class="number">50</span></span><br><span class="line">s = <span class="string">&quot;&#123;0&#125; has &#123;1:.2f&#125; kg&quot;</span>.format(a, b)</span><br><span class="line"></span><br><span class="line">s2 = <span class="string">f&quot;<span class="subst">&#123;a&#125;</span> has <span class="subst">&#123;b:<span class="number">.2</span>f&#125;</span> kg&quot;</span></span><br></pre></td></tr></table></figure>
+          <h2 id="1-f-string-字符串插值"><a href="#1-f-string-字符串插值" class="headerlink" title="1. f-string 字符串插值"></a>1. f-string 字符串插值</h2><p>传统字符串格式化是使用%， python2.6 后引入了format提供了更强大，灵活的控制。python3 开始提供了字符串插值的方法，更加方便，清晰。这种方式在其它语言中并不陌生。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&quot;Peeter&quot;</span></span><br><span class="line">b = <span class="number">50</span></span><br><span class="line">s = <span class="string">&quot;&#123;0&#125; has &#123;1:.2f&#125; kg&quot;</span>.<span class="built_in">format</span>(a, b)</span><br><span class="line"></span><br><span class="line">s2 = <span class="string">f&quot;<span class="subst">&#123;a&#125;</span> has <span class="subst">&#123;b:<span class="number">.2</span>f&#125;</span> kg&quot;</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/07/01/new-in-py3/#more" rel="contents">
@@ -589,14 +650,13 @@ sock 权限问题</p>
 
       
           <ul>
-<li>if 可以有多个;隔开的语句，if xxx; yyy {...}。 golang语句分隔符其实是;但是可以省略</li>
+<li>if 可以有多个;隔开的语句，if xxx; yyy {…}。 golang语句分隔符其实是;但是可以省略</li>
 <li><strong>golang 中函数名头大小写决定了函数在包外的可见性！</strong></li>
-<li>a := value 简短变量声明只能用 在函数内， 注意是 <strong>声明</strong></li>
+<li>a :&#x3D; value 简短变量声明只能用 在函数内， 注意是 <strong>声明</strong></li>
 <li>go 中指针是不能改变的</li>
 <li>编译器自动选择在栈上还是堆上分配空间，但是不由var还是new方式决定！</li>
-<li>注意go 中 := 和 多重赋值, 和作用域的坑</li>
-<li>包导入：. &quot;xx&quot;, _ &quot;xx&quot;, f &quot;xx&quot;</li>
-</ul>
+<li>注意go 中 :&#x3D; 和 多重赋值, 和作用域的坑</li>
+<li>包导入：. “xx”, _ “xx”, f “xx”</li></ul>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/11/05/go-note/#more" rel="contents">
@@ -677,7 +737,7 @@ sock 权限问题</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>  flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:</p>
+          <p>&amp;emsp;&amp;emsp;flutter通过widget树的形式构建UI，不同的widget怎么去访问或者传递一个数据（状态），并且在这个状态改变后通知到其它Widget呢，官方简单demo中是通过构造函数的参数把数据或者修改数据函数传递给子widget，但是随着应用规模扩大，widget树会很复杂:</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/09/05/reduxinflutter/#more" rel="contents">
@@ -749,7 +809,7 @@ sock 权限问题</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>  最近想着做个app，自己有一点android开发经验，但是从来没做过ios开发，就想用跨平台的方式，一劳永逸。于是对比了不少跨平台的方案，iconic, xamarin, react native，最后本打算用react native，偶然发现flutter，google的产品，必须得试一下啊。</p>
+          <p>&amp;emsp;&amp;emsp;最近想着做个app，自己有一点android开发经验，但是从来没做过ios开发，就想用跨平台的方式，一劳永逸。于是对比了不少跨平台的方案，iconic, xamarin, react native，最后本打算用react native，偶然发现flutter，google的产品，必须得试一下啊。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/06/24/flutterstart/#more" rel="contents">
@@ -821,92 +881,10 @@ sock 权限问题</p>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>  坐地铁时在高速行驶的列车上看到稳定的广告觉得挺有意思，就思考了下实现的原理。</p>
+          <p>&amp;emsp;&amp;emsp;坐地铁时在高速行驶的列车上看到稳定的广告觉得挺有意思，就思考了下实现的原理。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/06/02/metroads/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blogml.top/2018/02/01/reactivex/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="BoostMerlin">
-      <meta itemprop="description" content="愿此时平淡，愿彼时灿烂">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雁过有声">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/02/01/reactivex/" class="post-title-link" itemprop="url">reactivex</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-02-01 11:36:16" itemprop="dateCreated datePublished" datetime="2018-02-01T11:36:16+08:00">2018-02-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-04-14 14:07:11" itemprop="dateModified" datetime="2018-04-14T14:07:11+08:00">2018-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/computer/" itemprop="url" rel="index"><span itemprop="name">computer</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一个学习ReactiveX不错的地方：<a target="_blank" rel="noopener" href="http://www.introtorx.com/Content/v1.0.10621.0/01_WhyRx.html">Intro to Rx</a>
-以作记录：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/02/01/reactivex/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -997,7 +975,7 @@ sock 权限问题</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1007,7 +985,7 @@ sock 权限问题</p>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -173,7 +173,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blogml.top/2023/02/20/char-encode/">
+    <link itemprop="mainEntityOfPage" href="https://blogml.top/2023/02/20/mysql-index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -187,7 +187,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/02/20/char-encode/" class="post-title-link" itemprop="url">字符编码</a>
+            <a href="/2023/02/20/mysql-index/" class="post-title-link" itemprop="url">mysql建立索引时为什么要求区分度高？</a>
         </h2>
 
         <div class="post-meta">
@@ -212,10 +212,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>记得以前十多年前上网的时候，会经常碰到网页乱码，然后就会在浏览器选择一个合适的字符编码。<br><img src="/2023/02/20/char-encode/encodes.png" alt="alt">  </p>
+          <p>因为InnoDB支持事务，空间利用率高（使用聚簇索引），行级锁等特点，是mysql的默认存储引擎。在建立索引时，通常说索引列区分度高效果更好，其原理是什么？<br>MySQL B+树索引是MySQL中最常用的索引类型，它是一种基于B+树数据结构的索引方式。B+树索引的优点在于它可以快速定位到需要查找的数据，同时还可以支持范围查询和排序等操作。B+树是在B树基础上的一种优化，非叶子节点上仅存储键值，不存储数据；而所有数据记录均存储在叶子节点上，并且数据是按照顺序排列的。  </p>
+<ul>
+<li><p>如果一列数据为性别，只有1-2个值时，查询时会不会走索引？索引树是什么样？</p>
+</li>
+<li><p>为什么<code>not in</code>也通常会使用索引失效？</p>
+</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/02/20/char-encode/#more" rel="contents">
+              <a class="btn" href="/2023/02/20/mysql-index/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -325,7 +331,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blogml.top/2022/12/25/mysql-index/">
+    <link itemprop="mainEntityOfPage" href="https://blogml.top/2022/12/25/char-encode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -339,7 +345,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/12/25/mysql-index/" class="post-title-link" itemprop="url">mysql建立索引时为什么要求区分度高？</a>
+            <a href="/2022/12/25/char-encode/" class="post-title-link" itemprop="url">字符编码回顾</a>
         </h2>
 
         <div class="post-meta">
@@ -370,16 +376,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>因为InnoDB支持事务，空间利用率高（使用聚簇索引），行级锁等特点，是mysql的默认存储引擎。在建立索引时，通常说索引列区分度高效果更好，其原理是什么？<br>MySQL B+树索引是MySQL中最常用的索引类型，它是一种基于B+树数据结构的索引方式。B+树索引的优点在于它可以快速定位到需要查找的数据，同时还可以支持范围查询和排序等操作。B+树是在B树基础上的一种优化，非叶子节点上仅存储键值，不存储数据；而所有数据记录均存储在叶子节点上，并且数据是按照顺序排列的。  </p>
-<ul>
-<li><p>如果一列数据为性别，只有1-2个值时，查询时会不会走索引？索引树是什么样？</p>
-</li>
-<li><p>为什么<code>not in</code>也通常会使用索引失效？</p>
-</li>
-</ul>
+          <p>记得以前十多年前上网的时候，会经常碰到网页乱码，然后就会在浏览器选择一个合适的字符编码。<br><img src="/2022/12/25/char-encode/encodes.png" alt="alt">  </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/12/25/mysql-index/#more" rel="contents">
+              <a class="btn" href="/2022/12/25/char-encode/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

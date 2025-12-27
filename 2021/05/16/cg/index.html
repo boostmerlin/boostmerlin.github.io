@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>图形学和Shader简单介绍 - 雁过留声</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="雁过留声"><meta name="msapplication-TileImage" content="/images/logo.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="雁过留声"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="一次组内分享  先看一张图    如果这是一张用软件建模渲染的图，有人会说没什么稀奇。但其实这是一位叫iq大佬用各种数学公式通过Shader绘制的，是不是觉得不明觉厉。  Inigo Quilez，是一位用使用代码、数学、艺术进行shader编程，创建精美图像的大佬，同时也是一位滑雪高手。他说：你可以在电脑绘图方面打败我，但在滑雪方面不行。  图形学被称为计算机的三大浪漫之一"><meta property="og:type" content="blog"><meta property="og:title" content="图形学和Shader简单介绍"><meta property="og:url" content="https://blogml.top/2021/05/16/cg/"><meta property="og:site_name" content="雁过留声"><meta property="og:description" content="一次组内分享  先看一张图    如果这是一张用软件建模渲染的图，有人会说没什么稀奇。但其实这是一位叫iq大佬用各种数学公式通过Shader绘制的，是不是觉得不明觉厉。  Inigo Quilez，是一位用使用代码、数学、艺术进行shader编程，创建精美图像的大佬，同时也是一位滑雪高手。他说：你可以在电脑绘图方面打败我，但在滑雪方面不行。  图形学被称为计算机的三大浪漫之一"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/snail.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/pipeline.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/gpu-r-pipeline.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/frustum-trans.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/clipping.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/tt.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/blend.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/affine.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/clamp.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/fmod.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/smoothstep.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/lerp.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/axis.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/theta.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/half-heart.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/thin.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/heart.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/beating-func.png"><meta property="og:image" content="https://blogml.top/2021/05/16/cg/beating.gif"><meta property="article:published_time" content="2021-05-16T12:19:00.000Z"><meta property="article:modified_time" content="2025-12-25T01:57:40.213Z"><meta property="article:author" content="BoostMerlin"><meta property="article:tag" content="Unity"><meta property="article:tag" content="Shader"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://blogml.top/2021/05/16/cg/snail.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blogml.top/2021/05/16/cg/"},"headline":"图形学和Shader简单介绍","image":["https://blogml.top/2021/05/16/cg/snail.png","https://blogml.top/2021/05/16/cg/pipeline.png","https://blogml.top/2021/05/16/cg/gpu-r-pipeline.png","https://blogml.top/2021/05/16/cg/frustum-trans.png","https://blogml.top/2021/05/16/cg/clipping.png","https://blogml.top/2021/05/16/cg/tt.png","https://blogml.top/2021/05/16/cg/blend.png","https://blogml.top/2021/05/16/cg/affine.png","https://blogml.top/2021/05/16/cg/clamp.png","https://blogml.top/2021/05/16/cg/fmod.png","https://blogml.top/2021/05/16/cg/smoothstep.png","https://blogml.top/2021/05/16/cg/lerp.png","https://blogml.top/2021/05/16/cg/axis.png","https://blogml.top/2021/05/16/cg/theta.png","https://blogml.top/2021/05/16/cg/half-heart.png","https://blogml.top/2021/05/16/cg/thin.png","https://blogml.top/2021/05/16/cg/heart.png","https://blogml.top/2021/05/16/cg/beating-func.png","https://blogml.top/2021/05/16/cg/beating.gif"],"datePublished":"2021-05-16T12:19:00.000Z","dateModified":"2025-12-25T01:57:40.213Z","author":{"@type":"Person","name":"BoostMerlin"},"publisher":{"@type":"Organization","name":"雁过留声","logo":{"@type":"ImageObject","url":"https://blogml.top/images/logo.svg"}},"description":"一次组内分享  先看一张图    如果这是一张用软件建模渲染的图，有人会说没什么稀奇。但其实这是一位叫iq大佬用各种数学公式通过Shader绘制的，是不是觉得不明觉厉。  Inigo Quilez，是一位用使用代码、数学、艺术进行shader编程，创建精美图像的大佬，同时也是一位滑雪高手。他说：你可以在电脑绘图方面打败我，但在滑雪方面不行。  图形学被称为计算机的三大浪漫之一"}</script><link rel="canonical" href="https://blogml.top/2021/05/16/cg/"><link rel="icon" href="/images/logo.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/logo.svg" alt="雁过留声" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Works" href="https://works.blogml.top/"><i class="fa fa-tasks"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2021-05-16T12:19:00.000Z" title="2021/5/16 20:19:00">2021-05-16</time>发表</span><span class="level-item"><time dateTime="2025-12-25T01:57:40.213Z" title="2025/12/25 09:57:40">2025-12-25</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a></span><span class="level-item">27 分钟读完 (大约4003个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">图形学和Shader简单介绍</h1><div class="content"><blockquote>
+<p>一次组内分享</p>
+</blockquote>
+<p>先看一张图</p>
+<img src="/2021/05/16/cg/snail.png" class="" title="?">  
+<p>如果这是一张用软件建模渲染的图，有人会说没什么稀奇。但其实这是一位叫iq大佬用各种数学公式通过Shader绘制的，是不是觉得不明觉厉。</p>
+<blockquote>
+<p>Inigo Quilez，是一位用使用代码、数学、艺术进行shader编程，创建精美图像的大佬，同时也是一位滑雪高手。他说：<em>你可以在电脑绘图方面打败我，但在滑雪方面不行</em>。</p>
+</blockquote>
+<p>图形学被称为计算机的三大浪漫之一</p>
+<span id="more"></span>
+
+<h2 id="1-基础"><a href="#1-基础" class="headerlink" title="1. 基础"></a>1. 基础</h2><h3 id="1-1-什么是Shader"><a href="#1-1-什么是Shader" class="headerlink" title="1.1 什么是Shader"></a>1.1 什么是Shader</h3><p>着色器（Shader）是运行在GPU上的小程序，是一种在GPU上的编程方式。原本用于图像浓淡处理，现在广泛应用在电影后期处理、计算机成像、电子游戏等领域，着色器常被用来制作各种特效。除了普通的光照模型，着色器还可以调整图像的色相、饱和度、亮度、对比度，生成模糊、高光、有体积光源、失焦、卡通渲染、色调分离、畸变、凹凸贴图、色键（即所谓的蓝幕、绿幕抠像效果）、边缘检测等效果。  </p>
+<p>因为有CUDA和ROCm架构的存在，除了Shader，还可以使用C&#x2F;C++来针对GPU编程实现大规模并行计算。比如深度学习和挖矿。</p>
+<h3 id="1-2-渲染管线（流水线）"><a href="#1-2-渲染管线（流水线）" class="headerlink" title="1.2 渲染管线（流水线）"></a>1.2 渲染管线（流水线）</h3><p>因为Shader是工作在渲染流水线的各个阶段，所以要了解Shader, 几乎没有不提渲染流水线。  </p>
+<blockquote>
+<p>什么是流水线？流水线解决什么问题？  </p>
+</blockquote>
+<p>这是一个工厂生产的例子</p>
+<img src="/2021/05/16/cg/pipeline.png" class="" title="?">
+
+<p>可见流水线提提高单位时间的产量，如果把显卡比作一个工厂，比如显卡RX5802048SP, 他有2048个流处理单元，像工厂里的2048条生产线同时开工，显著提高图形的处理能力。</p>
+<p>完整的渲染流水线是由CPU + GPU合作完成的，《Real-Time Rendering》一书中将渲染流程分为三个阶段：<strong>应用阶段(Application)</strong>、<strong>几何阶段(Geometry)</strong>、<strong>光栅化阶段(Rasterizer Stage)</strong></p>
+<ul>
+<li>应用阶段<br>a. 准备渲染数据，加载到显存<br>b. 设置渲染状态（如顶点属性，纹理，Shader等)<br>c. 调用Draw call</li>
+</ul>
+<blockquote>
+<p>CPU 和 GPU怎么协同工作？</p>
+</blockquote>
+<ul>
+<li><p>几何阶段<br>将渲染图元进行逐顶点，逐片元操作，把顶点坐标变换到屏幕空间，再交给光栅器处理</p>
+</li>
+<li><p>光栅化阶段<br>得到片元，计算每个图元覆盖了哪些像素，以及为这些像素计算它们的颜色，并决定哪些像素需要显示到屏幕上</p>
+</li>
+</ul>
+<p>注意这些只是概念上的流水线，是功能上的划分。一般我们说的GPU流水线包含几何阶段和光栅化阶段，即各个图形平台广泛应用的<strong>光栅化渲染流水线（Rasterization-Based Rendering Pipeline)</strong>, Shader正是工作在这一流水线上。</p>
+<img src="/2021/05/16/cg/gpu-r-pipeline.png" class="" title="?">
+
+<h3 id="1-2-渲染管线各阶段描述"><a href="#1-2-渲染管线各阶段描述" class="headerlink" title="1.2 渲染管线各阶段描述"></a>1.2 渲染管线各阶段描述</h3><ul>
+<li>顶点着色器<br>  a. 坐标变换，把顶点坐标从模型空间变化到齐次裁剪空间<br>  b. 逐顶点光照<br>这个阶段并不知道顶点间的关系也不知道顶点是否处于同一个三角形，因此可以并形化处理</li>
+</ul>
+<img src="/2021/05/16/cg/frustum-trans.png" class="" title="?">
+
+<ul>
+<li>曲面细分着色器 (Tessellation Shader)：使用合适的细分算法，生成更高精度网格，从而提高画面的细节。</li>
+<li>几何着色器（Geometry Shader): 几何着色器接收片元（逐片元）的一组顶点，然后可以对其进行变换，控制生成和销毁图元。<br>这两类着色器非常强大，但是也有它的局限<ul>
+<li>opengl 3.1+, shader model 4.0; directx 10+</li>
+<li>不能很好并行处理</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>几何着色器可以用于细分吗？</p>
+</blockquote>
+<ul>
+<li>裁剪<br>将在NDC坐标下（硬件做透视除法得到）的图元根据是否完全在视野内，部分在视野内，完成在视野外进行裁剪</li>
+</ul>
+<img src="/2021/05/16/cg/clipping.png" class="" title="?">
+
+<ul>
+<li>屏幕映射（Screen Mapping)<br>将三维坐标映射到屏幕上，即屏幕坐标。</li>
+</ul>
+<blockquote>
+<p>三维坐标中的Z在屏幕坐标系里会怎么样？</p>
+</blockquote>
+<p>窗口坐标中的值会被传递到下一阶段，即光栅化</p>
+<ul>
+<li><p>三角形设置<br>从三角形顶点数据计算三角形网络表示数据的过程，该过程在专门为其设计的硬件上执行，得到的数据是下一阶段的输入。</p>
+</li>
+<li><p>三角形遍历<br>如果一个像素被一个三角形网格所覆盖，就生成一个片元。这个过程就叫Triangle Traversal。显然片元已经和设备相关了。注意一个片元并不是一个像素，它是一个状态的集合，如屏幕坐标，深度，法线，纹理。最终是否要显示到屏幕上，显示什么颜色，还需要最后阶段的逐片元操作（Per-Frragment Operations）</p>
+</li>
+</ul>
+<img src="/2021/05/16/cg/tt.png" class="" title="?">
+
+<ul>
+<li><p>片元着色器<br>这里也是一个完全可编程的阶段，片元着色器执行逐像素的着色计算，将前面插值获得的着色数据作为输入。然后将一种或者多种颜色输出给下一个阶段。这里最典型的，最重要的技术之一就是纹理贴图（Texturing）。</p>
+</li>
+<li><p>逐片元操作<br>在DirectX中叫融合（Output-Merging)， 合并阶段不是可编程的，但是是高度可配置的。<br>这里作用是：<br>a. 决定片元可见性<br>b. 和颜色缓冲区中颜色混合<br>这里有许多缓冲区完成不同的功能，如stencil缓冲区，z缓冲区，alpha缓冲区(deprecated), color缓冲区， frame缓冲区…</p>
+</li>
+</ul>
+<p>下图是一个颜色缓冲区（帧缓冲）的逻辑：</p>
+<img src="/2021/05/16/cg/blend.png" class="" title="?">
+<p>最后会根据<em>混合操作</em>的配置来更新目标颜色：<br>C_result&#x3D;C_source∗F_source+C_destination∗F_destination</p>
+<table>
+<thead>
+<tr>
+<th>f source</th>
+<th>f destination</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SrcAlpha</td>
+<td>OneMinusSrcAlpha 正常</td>
+</tr>
+<tr>
+<td>OneMinusDstAlpha</td>
+<td>One 柔和相加（Soft Addtive)</td>
+</tr>
+<tr>
+<td>DstColor</td>
+<td>Zero 正片叠底（Multiply），即相乘</td>
+</tr>
+<tr>
+<td>DstColor</td>
+<td>SrcColor 两倍相乘（2x Multiply）</td>
+</tr>
+</tbody></table>
+<h3 id="1-3-图形学中的数学"><a href="#1-3-图形学中的数学" class="headerlink" title="1.3 图形学中的数学"></a>1.3 图形学中的数学</h3><ol>
+<li>笛卡尔坐标、点、向量</li>
+</ol>
+<ul>
+<li>坐标系分左手和右手</li>
+<li>点积的几何意义之一，就是可以表示投影，这在光照计算中很有用</li>
+<li>叉积结果是一个向量，可以用来计算一个平面，三角形矢量，判断面的朝向</li>
+</ul>
+<ol start="2">
+<li>矩阵</li>
+</ol>
+<ul>
+<li><p>向量可以看成nX1的列矩阵[x, y, z]<sup>T</sup>，或者1Xn的行矩阵[x, y, z]</p>
+</li>
+<li><p>矩阵的几何意义在图形中是变换（transform）</p>
+</li>
+<li><p>线性变换</p>
+  <figure class="highlight m"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f(x) + f(y) <span class="built_in">=</span> f(x+y)</span><br><span class="line">kf(x) <span class="built_in">=</span> f(kx)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>线性变换有：<strong>旋转、缩放、镜像、正交投影、错切</strong>，线性变换可以用M33矩阵表示出来<br>但是平移不是线线的，于是引入了仿射变换（affine transform），合并了线性变换和平移，并引入了齐次坐标空间，把3x3矩阵扩展到了4x4。  </p>
+<p>齐次坐标变为了[x,y,z,w]</p>
+<img src="/2021/05/16/cg/affine.png" class="" title="?">
+
+<ul>
+<li>坐标空间变换也用矩阵来表示</li>
+</ul>
+<p>局部空间(Local Space，或者称为物体空间(Object Space))<br>世界空间(World Space)<br>观察空间(View Space，或者称为视觉空间(Eye Space))<br>裁剪空间(Clip Space)<br>屏幕空间(Screen Space)  </p>
+<h2 id="2-Shader-编程"><a href="#2-Shader-编程" class="headerlink" title="2. Shader 编程"></a>2. Shader 编程</h2><h3 id="2-1-Shader编程语言"><a href="#2-1-Shader编程语言" class="headerlink" title="2.1 Shader编程语言"></a>2.1 Shader编程语言</h3><p>可编程渲染管线出现之前，Shader是用汇编语言来实现的。随着发展，出现了更高级的<em>Shading Language</em>。</p>
+<ul>
+<li><p>GLSL: OpenGL, 由于opengl是良好的跨平台性, GLSL也有良好的跨平台性，但是这个跨平台性是由各个硬件产商自己实现的。</p>
+</li>
+<li><p>HLSL: DirectX, 基本只用于微软自己的产品。</p>
+</li>
+<li><p>cg(C for Graphic), Nvidia设计的真正跨平台的GPU编程语言，它会根据平台的不同，编译成相应的中间语言（计算机中没有增加中间层解决不了的问题T_T）。由于nvidia和microsoft的合作，他们在标准硬件光照语言的语法和语义上达成了一致，因此Cg和HLSL（DX9+)很像。比如在Unity上，我们一般说使用Cg&#x2F;HLSL或者GLSL编写Shader。因为CG不再被维护，Unity也使用HLSL编译器来编译</p>
+</li>
+</ul>
+<h3 id="2-2-cg-hlsl介绍"><a href="#2-2-cg-hlsl介绍" class="headerlink" title="2.2 cg&#x2F;hlsl介绍"></a>2.2 cg&#x2F;hlsl介绍</h3><h3 id="2-2-1-语法"><a href="#2-2-1-语法" class="headerlink" title="2.2.1 语法"></a>2.2.1 语法</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-language-syntax">HLSL</a><br><a target="_blank" rel="noopener" href="https://developer.download.nvidia.cn/cg/Cg_language.html">CG</a></p>
+<p>列举一些与c不同的地方：</p>
+<ol>
+<li><p>关键字</p>
+<ul>
+<li>uniform 修饰顶层变量，提供了一种和外部语言沟通的机制</li>
+</ul>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uniform float4 position</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>in&#x2F;out&#x2F;inout 定义函数参数，指定它是输入输出参数<br> …</li>
+</ul>
+</li>
+<li><p>变量</p>
+<ul>
+<li>half 16位浮点数</li>
+<li>fixed [-2, 2] 之间的浮点数</li>
+</ul>
+</li>
+<li><p>向量和矩阵</p>
+<ul>
+<li>向量 type<number>, 如：</li>
+</ul>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int1 iVector = <span class="number">1</span>;</span><br><span class="line">float3 v = float3(<span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.4</span>);</span><br><span class="line">float3 v = &#123;<span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.4</span>&#125;;</span><br><span class="line">float3x3 m = float3x3(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line">float3x3 m = float3x3(v, v, v);</span><br></pre></td></tr></table></figure></li>
+<li><p>swizzle</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float3 v = float3(<span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.4</span>);</span><br><span class="line">float4 a = v.xxyz;</span><br></pre></td></tr></table></figure>
+<p> 矩阵也可以swizzle</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">float4x4 myMatrix;</span><br><span class="line"><span class="type">float</span>    myFloatScalar;</span><br><span class="line"><span class="comment">// Set myFloatScalar to myMatrix[3][2]</span></span><br><span class="line">myFloatScalar = myMatrix._m32;</span><br></pre></td></tr></table></figure></li>
+<li><p>语义（Semantics）<br>可以用在函数参数，返回值，结构体内。语义定义了shader在流水线不同阶段解释（读写）数据的方式，<br>有些语义只能用于顶点着色器，有些只能用于片元着色器，有些在两个地方都能用：</p>
+</li>
+</ol>
+<ul>
+<li>POSITION 物体空间的顶点坐标，作为顶点着色器的输入</li>
+<li>SV_Target Render target, 有多个，渲染的最终位置</li>
+<li>COLOR 一般用来传递漫反射或高光颜色</li>
+</ul>
+<h4 id="2-2-2-常用函数"><a href="#2-2-2-常用函数" class="headerlink" title="2.2.2 常用函数"></a>2.2.2 常用函数</h4><ol>
+<li>clamp&#x2F;saturate 截取<br>clamp(x, min, max)<br>将x截断到[min, max]内<br>clamp(1, 2, 3) &#x2F;&#x2F;2</li>
+</ol>
+<img src="/2021/05/16/cg/clamp.png" class="" title="?">
+
+<ol start="2">
+<li>fmod(x, y) 浮点数取余</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">9.2</span>;</span><br><span class="line">b = <span class="number">3.7</span>;</span><br><span class="line">c = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">fmod</span>(a,c); <span class="comment">//1.2</span></span><br><span class="line"><span class="built_in">fmod</span>(b,c); <span class="comment">//1.8</span></span><br></pre></td></tr></table></figure>
+<p>常用于限制范围，产生循环</p>
+<img src="/2021/05/16/cg/fmod.png" class="" title="?">
+
+<ol start="3">
+<li>smoothstep 平滑阶梯函数</li>
+</ol>
+<p>将x映射到[0,1]并且做一个平滑处理，t1是可以大于t2的，它决定了曲线的走向</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> <span class="title function_">smoothstep</span><span class="params">(<span class="type">float</span> t1, <span class="type">float</span> t2, <span class="type">float</span> x)</span> &#123;</span><br><span class="line">  x = saturate((x - t1) / (t2 - t1), <span class="number">0.0</span>, <span class="number">1.0</span>); </span><br><span class="line">  <span class="keyword">return</span> x * x * (<span class="number">3</span> - <span class="number">2</span> * x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2021/05/16/cg/smoothstep.png" class="" title="?">
+<p>常用于边界的平滑过度</p>
+<ol start="4">
+<li>lerp 插值, 也叫mix<br>lerp(x, y, t) 在x, y之间进行插值，即x + (y-x)*t</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lerp(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0.5</span>) <span class="comment">//1.5</span></span><br></pre></td></tr></table></figure>
+<img src="/2021/05/16/cg/lerp.png" class="" title="?">
+<p>lerp经常用来混合2个数据，比如颜色之类</p>
+<h3 id="2-3-Shader-Lab"><a href="#2-3-Shader-Lab" class="headerlink" title="2.3 Shader Lab"></a>2.3 Shader Lab</h3><p>Unity中使用自己的<em>Shader Lab</em>来进行Shader编程。粗略地可以把Shader Lab理解成Java中的Spring或者JS里的React。它最终会被编译成目标平台的Shader。</p>
+<p>Shader Lab有三类着色器：</p>
+<ol>
+<li>表面着色器：使用CG&#x2F;GLSL语法，可以看作是下面一种更高的抽象。比如可以直接使用预定义的光照模型</li>
+<li>顶点片元着色器：使用CG&#x2F;GLSL语法，最灵活的，但是自己要做的事情要多一些</li>
+<li>固定函数着色器：为兼容最老旧的显卡而存在，一般不会用了</li>
+</ol>
+<blockquote>
+<p>unity 2018还可以使用Shader Graph可视化方式帮你生成Shader，不用写代码！</p>
+</blockquote>
+<h4 id="2-3-1-ShaderLab-语法"><a href="#2-3-1-ShaderLab-语法" class="headerlink" title="2.3.1 ShaderLab 语法"></a>2.3.1 ShaderLab 语法</h4><p>一个基本的具有固定的结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;&lt;name&gt;&quot; &#123;</span><br><span class="line">    &lt;optional: Material properties&gt;</span><br><span class="line">    &lt;optional: custom editor&gt;</span><br><span class="line">    &lt;One or more SubShader definitions&gt;</span><br><span class="line">    &lt;optional: fallback&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>Shader Name是Shader标识</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Examples/ShaderSyntax&quot; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>properties是材质和shader的桥梁<br>property是对uniform变量更方便的使用</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Properties &#123;</span><br><span class="line">    _VarName (&quot;display name&quot;, PropertyType) = DefaultValue</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>颜色<br>_Color (“Color”, Color) &#x3D; (1,0,0,0)</p>
+<p>小数<br>_Radius(“Dot Width”, Float) &#x3D; 1</p>
+<ol start="3">
+<li>SubShader是shader逻辑实现的地方</li>
+</ol>
+<p>SubShader至少有一个，当unity加载Shader时，依次为目标平台选择一个可运行的SubShader，结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">SubShader &#123;</span><br><span class="line">    [Tags] //Tags &#123; &quot;RenderType&quot; = &quot;Opaque&quot; &#125;</span><br><span class="line">    [RenderSetup] //LOD 150, Cull On</span><br><span class="line">    Pass &#123;</span><br><span class="line">        [Name] //Name &quot;pass_name&quot;</span><br><span class="line">        [Tags] ////Tags &#123; &quot;LightMode&quot; = &quot;ForwardBase&quot; &#125;</span><br><span class="line">        [RenderSetup] //这里可以使用SubShader的渲染设置</span><br><span class="line">        CGPROGRAM</span><br><span class="line">            //cg code</span><br><span class="line">        ENDCG</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>Fallback<br>当没有SubShader可用时，使用Fallback ‘ShaderName’指定的Shader,也可以使用Fallback Off关闭该功能</li>
+</ol>
+<h4 id="2-3-2-ShaderLab-常用变量-函数介绍"><a href="#2-3-2-ShaderLab-常用变量-函数介绍" class="headerlink" title="2.3.2 ShaderLab 常用变量&#x2F;函数介绍"></a>2.3.2 ShaderLab 常用变量&#x2F;函数介绍</h4><p>unity 内置的变量&#x2F;函数可以简化计算，并且抹平不同平台的差异, 使用时候需要：<br><code>#include &quot;UnityCG.cginc&quot;</code></p>
+<p>只介绍下边会用到的：  </p>
+<ul>
+<li><p>UNITY_MATRIX_MVP&#x2F;UnityObjectToClipPos<br>模型视图投影矩阵，将模型坐标变换到裁剪空间</p>
+</li>
+<li><p>ComputeScreenPos<br>从裁剪空间计算屏幕空间的坐标<br>注意该坐标是中心坐标用小数表示，如果视口是[0,0,480,600], 那么ScreenPos &#x3D; [0.5,0.5,480.5,600.5]</p>
+</li>
+<li><p>_ScreenParams<br>屏幕参数, float4类型，含义如下：<br>x 是当前渲染目标在像素值中宽度<br>y 是当前渲染目标在像素值中的高度<br>z 是 1.0 + 1.0&#x2F;width<br>w 是 1.0 + 1.0&#x2F;height  </p>
+</li>
+<li><p>_Time<br>float4类型:<br>x t&#x2F;20<br>y t<br>z t<em>2<br>w t</em>3<br>t 自场景加载以来时间，一般用于Shader中产生动画</p>
+</li>
+</ul>
+<h2 id="3-实践一下"><a href="#3-实践一下" class="headerlink" title="3. 实践一下"></a>3. 实践一下</h2><p>如何用fragment shader画一个心形？</p>
+<h3 id="3-1-绘制基础"><a href="#3-1-绘制基础" class="headerlink" title="3.1 绘制基础"></a>3.1 绘制基础</h3><p>在这之前，先了解下坐标系设置。并在屏幕上绘制一个简单的圆，理解shader绘图机制，结合前面提到要点，理解工作原理</p>
+<ol>
+<li>新建一个顶点片元着色器<br>在Project View中-&gt;右键-&gt;Create-&gt;Shaer-&gt;Unlit Shader. 修改生成的代码，在顶点着色器中添加：</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">v2f <span class="title function_">vert</span> <span class="params">(float4 v : POSITION)</span></span><br><span class="line">&#123;</span><br><span class="line">    v2f o;</span><br><span class="line">    o.vertex = UnityObjectToClipPos(v);</span><br><span class="line">    o.scrPos = ComputeScreenPos(o.vertex);</span><br><span class="line">    <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意这里使用ComputeScreenPost而不是VPOS语义，实现平台无关的坐标系，经测试VPOS在Windows下的左上角是原点</p>
+<ol start="2">
+<li>理解坐标系<br>在片元着色器中加入如下代码：</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fixed4 <span class="title function_">frag</span> <span class="params">(v2f i)</span> : SV_Target</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//这里是齐次坐标系，除以w将得到ndc坐标，范围在[0,1]</span></span><br><span class="line">    float2 fragCoord = i.scrPos.xy / i.scrPos.w;</span><br><span class="line">    <span class="keyword">return</span> fixed4(fragCoord, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会得到</p>
+<img src="/2021/05/16/cg/axis.png" class="" title="?">
+<p>可以看到左路下方为（0，0）， 右上角为（1，1）, 为了使用方便我们将坐标系移到屏幕中心并归一化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float2 fragCoord = i.scrPos.xy / i.scrPos.w * _ScreenParams.xy;</span><br><span class="line">fragCoord = (<span class="number">2</span> * fragCoord - _ScreenParams.xy) / min(_ScreenParams.x, _ScreenParams.y);</span><br></pre></td></tr></table></figure>
+<p>这样坐标中心是[0,0], 当我们在[-2, 1]之间绘制时，就能保证所有东西在屏内。</p>
+<h3 id="3-2-心的数学"><a href="#3-2-心的数学" class="headerlink" title="3.2 心的数学"></a>3.2 心的数学</h3><ol>
+<li>atan2(y, x)<br>返回向量x,y的与x轴的夹角并能正确处理0值。<br>当点(x, y) 落入第一象限时，atan2(y, x)的范围是 0 ~ pi&#x2F;2;<br>当点(x, y) 落入第二象限时，atan2(y, x)的范围是 pi&#x2F;2 ~ pi;<br>当点(x, y) 落入第三象限时，atan2(y, x)的范围是 －pi ~ －pi&#x2F;2;<br>当点(x, y) 落入第四象限时，atan2(y, x)的范围是 -pi&#x2F;2～0.<br>可见返回[-pi, pi]</li>
+</ol>
+<p>atan计算屏幕上任一点的与x的角，如果用极坐标方程表示,<br><code>r=theta</code> 如图所示:  </p>
+<img src="/2021/05/16/cg/theta.png" class="" title="?">
+<p>问题转化为如果length(p) &lt;&#x3D; theta则落在心形线内。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> a = <span class="built_in">atan2</span>(p.x, p.y) / <span class="number">3.1415926</span>;</span><br><span class="line"><span class="type">float</span> r = length(p);</span><br><span class="line"><span class="type">float</span> d = a - r;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> lerp(bcol, _Color, smoothstep(<span class="number">-0.01</span>, <span class="number">0.01</span>, d));</span><br></pre></td></tr></table></figure>
+<p>会得到半个心：</p>
+<img src="/2021/05/16/cg/half-heart.png" class="" title="?">
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = abs(a);</span><br></pre></td></tr></table></figure>
+<p>得到一个完整的心，然后交换x, y轴，<code>atan2(p.y, p.x)</code>, 将心翻转过来，并调整一下位置。  </p>
+<p>但是这个心太胖了，用下边这个函数调整一下：<br>y &#x3D; (13.0<em>x - 22.0</em>x<em>x + 10.0</em>x<em>x</em>x)&#x2F;(6.0-5.0*x);</p>
+<img src="/2021/05/16/cg/thin.png" class="" title="?">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> a = <span class="built_in">atan2</span>(p.x, p.y) / <span class="number">3.1415926</span>;</span><br><span class="line"><span class="type">float</span> r = length(p);</span><br><span class="line">a = <span class="built_in">abs</span>(a);</span><br><span class="line">a = (<span class="number">13.0</span>*a - <span class="number">22.0</span>*a*a + <span class="number">10.0</span>*a*a*a)/(<span class="number">6.0</span><span class="number">-5.0</span>*a);</span><br><span class="line"><span class="type">float</span> d = a - r;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> lerp(bcol, _Color, smoothstep(<span class="number">-0.01</span>, <span class="number">0.01</span>, d));</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/05/16/cg/heart.png" class="" title="?">
+
+<h3 id="3-3-让心跳动起来"><a href="#3-3-让心跳动起来" class="headerlink" title="3.3 让心跳动起来"></a>3.3 让心跳动起来</h3><p>y&#x3D;(x^0.2<em>0.5 + 0.5)-(x^0.2</em>0.5 + 0.5)<em>0.2</em>sin(x<em>6.8231</em>3)<em>e^(-x</em>4)<br>函数图产生一个非线性的动画变换</p>
+<img src="/2021/05/16/cg/beating-func.png" class="" title="?">
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> tt = <span class="built_in">fmod</span>(_Time.y,<span class="number">1.5</span>)/<span class="number">1.5</span>;</span><br><span class="line"><span class="type">float</span> ss = <span class="built_in">pow</span>(tt,<span class="number">.2</span>)*<span class="number">0.5</span> + <span class="number">0.5</span>;  </span><br><span class="line">ss = <span class="number">1.0</span> + ss*<span class="number">0.5</span>*<span class="built_in">sin</span>(tt*<span class="number">6.2831</span>*<span class="number">3.0</span> + p.y*<span class="number">0.5</span>)*<span class="built_in">exp</span>(-tt*<span class="number">4.0</span>);  </span><br><span class="line">p *= float2(<span class="number">0.5</span>,<span class="number">1.5</span>) + ss*float2(<span class="number">0.5</span>,<span class="number">-0.5</span>);  </span><br></pre></td></tr></table></figure>
+<p>最后一行给x,y方向不同的跳动因子和方向</p>
+<img src="/2021/05/16/cg/beating.gif" class="" title="alt"></div><div class="article-licensing box"><div class="licensing-title"><p>图形学和Shader简单介绍</p><p><a href="https://blogml.top/2021/05/16/cg/">https://blogml.top/2021/05/16/cg/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>BoostMerlin</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2021-05-16</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2025-12-25</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Unity/">Unity</a><a class="link-muted mr-2" rel="tag" href="/tags/Shader/">Shader</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2022/03/06/python-import/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">python中的包和导入</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/12/12/mysql-reset-pass/"><span class="level-item">记一次重置mysql8密码的操作</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.png" alt="Boost Merlin"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Boost Merlin</p><p class="is-size-6 is-block">Damn Coder</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China, Earth</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">7</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">25</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/boostmerlin" target="_blank" rel="me noopener">关注我</a></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/computer/"><span class="level-start"><span class="level-item">computer</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%85%B6%E5%AE%83/"><span class="level-start"><span class="level-item">其它</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"><span class="level-start"><span class="level-item">图形学</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%9F%BA%E7%A1%80/"><span class="level-start"><span class="level-item">基础</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="level-start"><span class="level-item">数据库</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%94%9F%E6%B4%BB/"><span class="level-start"><span class="level-item">生活</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B/"><span class="level-start"><span class="level-item">编程</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-12-25T12:01:22.000Z">2025-12-25</time></p><p class="title"><a href="/2025/12/25/drive-sense-distance/">从数学的角度判断车头距障碍的距离</a></p><p class="categories"><a href="/categories/%E5%85%B6%E5%AE%83/">其它</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-25T03:14:52.000Z">2024-10-25</time></p><p class="title"><a href="/2024/10/25/fdtd/">FDTD(Finite-Difference Time-Domain)</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-02-18T14:05:08.000Z">2023-02-18</time></p><p class="title"><a href="/2023/02/18/bin_in_computer/">0.1 + 0.2 不等于 0.3</a></p><p class="categories"><a href="/categories/%E5%9F%BA%E7%A1%80/">基础</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-02-10T07:42:14.000Z">2023-02-10</time></p><p class="title"><a href="/2023/02/10/mysql-index/">mysql建立索引时为什么要求区分度高？</a></p><p class="categories"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-01-17T12:51:38.000Z">2023-01-17</time></p><p class="title"><a href="/2023/01/17/ugui-anchor-and-canvas/">UGUI中的anchor和canvas(屏幕适配)</a></p><p class="categories"><a href="/categories/computer/">computer</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2025/12/"><span class="level-start"><span class="level-item">十二月 2025</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/10/"><span class="level-start"><span class="level-item">十月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/01/"><span class="level-start"><span class="level-item">一月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/10/"><span class="level-start"><span class="level-item">十月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/03/"><span class="level-start"><span class="level-item">三月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2021/05/"><span class="level-start"><span class="level-item">五月 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/12/"><span class="level-start"><span class="level-item">十二月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/08/"><span class="level-start"><span class="level-item">八月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/07/"><span class="level-start"><span class="level-item">七月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/11/"><span class="level-start"><span class="level-item">十一月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/09/"><span class="level-start"><span class="level-item">九月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/06/"><span class="level-start"><span class="level-item">六月 2018</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/02/"><span class="level-start"><span class="level-item">二月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/01/"><span class="level-start"><span class="level-item">一月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2017/12/"><span class="level-start"><span class="level-item">十二月 2017</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Shader/"><span class="tag">Shader</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Unity/"><span class="tag">Unity</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/bit/"><span class="tag">bit</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/bitwise-op/"><span class="tag">bitwise-op</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/dart/"><span class="tag">dart</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/db/"><span class="tag">db</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/encoding/"><span class="tag">encoding</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/exception/"><span class="tag">exception</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/fdtd/"><span class="tag">fdtd</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/flutter/"><span class="tag">flutter</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/go/"><span class="tag">go</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/golang/"><span class="tag">golang</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/mysql/"><span class="tag">mysql</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/python/"><span class="tag">python</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/reactivex/"><span class="tag">reactivex</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/unity/"><span class="tag">unity</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/utf8/"><span class="tag">utf8</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"><span class="tag">位运算</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%85%B6%E5%AE%83/"><span class="tag">其它</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="tag">数据分析</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%96%AD%E8%A8%80/"><span class="tag">断言</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><span class="tag">正则表达式</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%8E%AF%E8%A7%86/"><span class="tag">环视</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%94%B5%E7%A3%81%E5%9C%BA/"><span class="tag">电磁场</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%BD%A6%E8%B7%9D%E6%84%9F%E7%9F%A5/"><span class="tag">车距感知</span><span class="tag">1</span></a></div></div></div></div></div></div><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3"><!--!--></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/logo.svg" alt="雁过留声" height="28"></a><p class="is-size-7"><span>&copy; 2025 BoostMerlin</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><script type="text/javascript" id="MathJax-script" async>MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      },
+      chtml: {
+        matchFontHeight: false
+      }
+    };</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

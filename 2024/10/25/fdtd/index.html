@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>FDTD(Finite-Difference Time-Domain) - 雁过留声</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="雁过留声"><meta name="msapplication-TileImage" content="/images/logo.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="雁过留声"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="基础概念电场每个原子里面都有绕原子核心运动的电子(经典力学上是这么说)，原子核中有质子。电子带负电，质子带正电。当正负相中和，物体对外表现中性。否则表现为带电。宏观上，带电体之间会相互作用，同极相斥，异极相吸。这种相互作用力叫做电场力。带电体不管静止和运动，都会产生电场。静止的称为静电场，运动的称为感应电场。电场会使其中的电荷受力，可使其运动。因此电场具有势能，就像重力会产生重力势能一样。电场中两"><meta property="og:type" content="blog"><meta property="og:title" content="FDTD(Finite-Difference Time-Domain)"><meta property="og:url" content="https://blogml.top/2024/10/25/fdtd/"><meta property="og:site_name" content="雁过留声"><meta property="og:description" content="基础概念电场每个原子里面都有绕原子核心运动的电子(经典力学上是这么说)，原子核中有质子。电子带负电，质子带正电。当正负相中和，物体对外表现中性。否则表现为带电。宏观上，带电体之间会相互作用，同极相斥，异极相吸。这种相互作用力叫做电场力。带电体不管静止和运动，都会产生电场。静止的称为静电场，运动的称为感应电场。电场会使其中的电荷受力，可使其运动。因此电场具有势能，就像重力会产生重力势能一样。电场中两"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/q.png"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/qE.jpg"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/B.jpg"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/B2.jpg"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/B3.jpg"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/wave.jpg"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/wave-e.png"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/wave-spectrum.png"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/fdtd.jpg"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/fdtd-yee.png"><meta property="og:image" content="https://blogml.top/2024/10/25/fdtd/fdtd2.jpg"><meta property="article:published_time" content="2024-10-25T03:14:52.000Z"><meta property="article:modified_time" content="2025-12-25T01:57:40.241Z"><meta property="article:author" content="BoostMerlin"><meta property="article:tag" content="fdtd"><meta property="article:tag" content="电磁场"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://blogml.top/2024/10/25/fdtd/q.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blogml.top/2024/10/25/fdtd/"},"headline":"FDTD(Finite-Difference Time-Domain)","image":["https://blogml.top/2024/10/25/fdtd/q.png","https://blogml.top/2024/10/25/fdtd/qE.jpg","https://blogml.top/2024/10/25/fdtd/B.jpg","https://blogml.top/2024/10/25/fdtd/B2.jpg","https://blogml.top/2024/10/25/fdtd/B3.jpg","https://blogml.top/2024/10/25/fdtd/wave.jpg","https://blogml.top/2024/10/25/fdtd/wave-e.png","https://blogml.top/2024/10/25/fdtd/wave-spectrum.png","https://blogml.top/2024/10/25/fdtd/fdtd.jpg","https://blogml.top/2024/10/25/fdtd/fdtd-yee.png","https://blogml.top/2024/10/25/fdtd/fdtd2.jpg"],"datePublished":"2024-10-25T03:14:52.000Z","dateModified":"2025-12-25T01:57:40.241Z","author":{"@type":"Person","name":"BoostMerlin"},"publisher":{"@type":"Organization","name":"雁过留声","logo":{"@type":"ImageObject","url":"https://blogml.top/images/logo.svg"}},"description":"基础概念电场每个原子里面都有绕原子核心运动的电子(经典力学上是这么说)，原子核中有质子。电子带负电，质子带正电。当正负相中和，物体对外表现中性。否则表现为带电。宏观上，带电体之间会相互作用，同极相斥，异极相吸。这种相互作用力叫做电场力。带电体不管静止和运动，都会产生电场。静止的称为静电场，运动的称为感应电场。电场会使其中的电荷受力，可使其运动。因此电场具有势能，就像重力会产生重力势能一样。电场中两"}</script><link rel="canonical" href="https://blogml.top/2024/10/25/fdtd/"><link rel="icon" href="/images/logo.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/logo.svg" alt="雁过留声" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Works" href="https://works.blogml.top/"><i class="fa fa-tasks"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-10-25T03:14:52.000Z" title="2024/10/25 11:14:52">2024-10-25</time>发表</span><span class="level-item"><time dateTime="2025-12-25T01:57:40.241Z" title="2025/12/25 09:57:40">2025-12-25</time>更新</span><span class="level-item">33 分钟读完 (大约4953个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">FDTD(Finite-Difference Time-Domain)</h1><div class="content"><h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><h2 id="电场"><a href="#电场" class="headerlink" title="电场"></a>电场</h2><p>每个原子里面都有绕原子核心运动的电子(经典力学上是这么说)，原子核中有质子。电子带负电，质子带正电。当正负相中和，物体对外表现中性。否则表现为带电。<br>宏观上，带电体之间会相互作用，同极相斥，异极相吸。这种相互作用力叫做电场力。<br>带电体不管静止和运动，都会产生电场。静止的称为静电场，运动的称为感应电场。<br>电场会使其中的电荷受力，可使其运动。因此电场具有势能，就像重力会产生重力势能一样。电场中两点间电势的差值叫做电势差（电压）</p>
+<span id="more"></span>
+
+<img src="/2024/10/25/fdtd/q.png" class="" title="电场力">
+
+<p>电场强度为E &#x3D; F&#x2F;q。单位为牛顿每库伦，符号为N&#x2F;C。其中q是试探电荷量，F是电荷在电中受到的力。另一单位是伏特每米，符号为V&#x2F;m。E&#x3D;U&#x2F;d，其中U是电压，d是电场中两点的距离。他们是等效的:  </p>
+<blockquote>
+<p>‌从电场力的公式出发‌，F &#x3D; Eq，将E的单位N&#x2F;C代入，得到F的单位是N。<br>‌&gt; 从电势差的公式出发‌，U &#x3D; Ed，将E的单位V&#x2F;m代入，得到U的单位是V。由于电势差U和距离d的单位分别是伏特和米，而1伏特等于1焦耳每库仑（J&#x2F;C），因此1V&#x2F;m &#x3D; 1J&#x2F;(C·m) &#x3D; 1(N·m)&#x2F;(C·m) &#x3D; 1N&#x2F;C‌。<br>1 焦耳 是1牛的力作用于1米的距离<br>电荷量的单位是库仑（coulomb）C。1C的电荷量相当于6.25×1018个电子所带的电荷量，一个普通大小的物体很难保持多于千分之一库仑的净电荷。</p>
+</blockquote>
+<img src="/2024/10/25/fdtd/qE.jpg" class="" title="电场">
+
+<ul>
+<li>电场会随距离而减弱 E&#x3D;kQ &#x2F; r^2</li>
+<li>空间的电场强度是矢量，方向是电场力作用的方向。</li>
+<li>线性运动的电荷不会产生变化的电场</li>
+<li>空间任一点的电场强度是该点多个电荷所产生的电场强度的矢量和。</li>
+<li>电场虽然看不见，摸不着，但是一种物质, 具有能量和动量。就像扔的一块石头一样。唯一不同的是，这种物质没有静止的质量</li>
+</ul>
+<p>这种电子的定向运动就产生了电流。物体内部分子的排列杂乱无章，使这些“分子电流”在物体内部互相抵消，总体没有环形电流，但一旦物体被磁化，分子就被有序排列，总体就产生了环形电流，也就有了磁性。  </p>
+<h2 id="磁场"><a href="#磁场" class="headerlink" title="磁场"></a>磁场</h2><p>磁场现象的发现更早。在战国时期，我国就发明了指南针。与电场相仿，磁场是在一定空间区域内连续分布的向量场，描述磁场的基本物理量是磁感应强度矢量B，也可以用磁感线形象地表示。西莫恩·泊松发展出一种物理模型，比较能够描述磁场。泊松认为磁性是由磁荷产生的，同类磁荷相排斥，异类磁荷相吸引。他的模型完全类比现代静电模型；磁荷产生磁场，就如同电荷产生电场一般</p>
+<img src="/2024/10/25/fdtd/B.jpg" class="" title="磁场">
+
+<p>然而，作为一个矢量场，磁场的性质（宏观）与电场颇为不同。</p>
+<ul>
+<li><p>磁场是无源有旋的矢量场，磁力线是闭合的曲线簇，不中断，不交叉。从N出发，指向S</p>
+</li>
+<li><p>磁场的运动相对性是指与场源同速运动的观察者及其检测仪器都不能测到运动中的场源所产生的磁场，而与场源不同速时则可测到场源的磁场。例如在地球表面参考系中，我们测定静止于地球表面的电子不产生磁场，但是这个静止于地球表面的电子却在不停地随同地表进行自转并围绕太阳公转。又例如，使导线对外产生磁场的电流是大量电子定向运动的结果。该载流导线在对外产生磁场的同时，其中的每一个运动电子并不被与其同行的其它电子的磁场所干扰，因为所有同行的电子都具有同等磁化而无法感受到其它电子磁场的存在</p>
+</li>
+<li><p>磁极不能单独存在，无论把磁铁切多么小，都会出现新的磁极</p>
+</li>
+</ul>
+<img src="/2024/10/25/fdtd/B2.jpg" class="" title="磁场">
+<p>磁场分为静磁场和动磁场。地球的磁场属于静磁场，电磁铁的磁场属于动磁场。</p>
+<h3 id="磁场性质"><a href="#磁场性质" class="headerlink" title="磁场性质"></a>磁场性质</h3><ul>
+<li>磁感应强度：与磁力线方向垂直的单位面积上所通过的磁力线数目，叫磁通密度，用B表示，单位为特斯拉（T）。</li>
+<li>磁通量：磁通量是通过某一截面积的磁力线总数，用Φ表示，单位为韦伯（Weber），符号是Wb。 通过一线圈的磁通的表达式为：Φ&#x3D;B·S（其中B为磁感应强度，S为该线圈的面积。） 1Wb&#x3D;1T·m2</li>
+<li>磁场强度：单位正电磁荷在磁场中所受的力被称为磁场强度(符号为H A&#x2F;m)，类比电荷。<br>安培分子流假说认为并不存在磁荷，自此磁场的强度多用磁感应强度(符号为B)表示。 但是在磁介质的磁化问题中，磁场强度作为一个导出的辅助量仍然发挥着重要作用。介质中，$H :&#x3D; \frac{B}{\mu_0} - M$</li>
+<li>安培力：匀强磁场对通电直导线的作用力，即安培力与磁感应强度、电流和导线长度成正比。（左手定则）F&#x3D;BILsinθ 矢量表达式：F&#x3D;I×BL。</li>
+<li>洛伦兹力：磁场会对电荷施加力。运动电荷在磁场中所受到的力以荷兰物理学家洛伦兹（H. A. Lorentz， 1853—1928）的姓氏命名，称为洛伦兹力（Lorentz force）。 （左手定则）F&#x3D;qvBsinθ。矢量表达式：F&#x3D;qv×B</li>
+</ul>
+<h3 id="与电场的关系"><a href="#与电场的关系" class="headerlink" title="与电场的关系"></a>与电场的关系</h3><p>在很长一段时间里，人们把磁现象和电现象看成两种彼此独立的自然现象。直到1820年丹麦物理学家奥斯特（H．C．Oersted，1777-1851）发现了电流的磁效应之后，人们才逐渐认识到电和磁之间的内在联系。</p>
+<p>经典物理学发现，变化的磁场产生电场，变化的电场产生磁场。这些实际是假设，这个假设基于电磁感应现象。 后来，麦克斯韦将各种电、磁方程整合，发展出麦克斯韦方程组，这方程组能够解释经典电学和磁学的各种现象。他提出了“分子涡流模型”，并成功地将安培定律加以延伸，增加入了一个有关于位移电流的项目，称为“麦克斯韦修正项目”。可以描述电磁波的行为，推导出电磁波方程。他又计算出电磁波的传播速度，发现这数值与光速非常接近。警觉的麦克斯韦立刻断定光波就是一种电磁波。后来，于1887年，海因里希·鲁道夫·赫兹做实验证明了这事实。麦克斯韦统一了电学、磁学、光学理论。  </p>
+<p>爱因斯坦在发展出狭义相对论的思想实验里，表明电场和磁场是处于不同参考系的观察者所观察到的同样现象。电场和磁场是电磁场的两面。设定两个参考系A和B，相对于参考系A，参考系B以有限速度移动。从参考系A观察为静止电荷产生的纯电场，在参考系B观察则成为移动中的电荷所产生的电场和磁场。</p>
+<blockquote>
+<p>变化的电场产生磁场，那么磁铁是怎么形成的呢？磁铁上有电流吗？</p>
+</blockquote>
+<p>磁铁对外没有电流，但是内部有电流，这就是安培分子流假说：在原子、分子等物质微粒内部，存在着一种环形电流——分子电流，分子电流使每个物质微粒都成为微小的磁体，它的两侧相当于两个磁极。一根铁棒，未被磁化的时候，内部各分子电流的取向是杂乱无章的，它们的磁场互相抵消，对外界不显磁性。当铁棒受到外界磁场的作用时，各分子电流的取向变得大致相同，铁棒被磁化，两端对外界显示出较强的磁作用，形成磁极。  </p>
+<img src="/2024/10/25/fdtd/B3.jpg" class="" title="alt">
+<p>现代物理学否定了原先流行的磁荷观。不过英国物理学家保罗·迪拉克在1931年利用数学公式预言了磁单极粒子的存在。当时他认为既然带有基本电荷的电子在宇宙中存在，那么理应带有基本“磁荷”的粒子存在。科学家仍没有放弃寻找磁单极粒子。如果找到了，电磁理论将要作重大修改。</p>
+<blockquote>
+<p>磁铁能否永久保持其强度？磁铁一直对外做功，磁性会减弱甚至消失吗？</p>
+</blockquote>
+<p>只要使磁铁远离对其磁性产生负面影响的因素（例如电源线、其他磁铁、高温等），理论上它将永久保持其磁性。<br>比如强磁质的特殊性质在高温下会失效，使得强磁质性质失效的临界温度叫做居里点。 这被解释为高温使得分子运动剧烈，磁铁内部的分子电流方向变得杂乱无章，磁场互相抵消，磁性消失。 当使用磁铁吸附物体或推开物体，是外部力量与磁场的能量相互转化，是能量从一种形式转化到另一种形式，只要磁铁内部排列不变，磁铁的磁性就不会减弱。</p>
+<h2 id="电磁波简介"><a href="#电磁波简介" class="headerlink" title="电磁波简介"></a>电磁波简介</h2><h3 id="机械波"><a href="#机械波" class="headerlink" title="机械波"></a>机械波</h3><p>在了解到电磁波前，自然界中还存在机械波。在机械波中，振动的传播需要具有弹性的介质。机械波分为横波和纵波。横波是振动方向垂直于波的传播方向，纵波是振动方向与波的传播方向一致。声波是一种纵波，水波是近似横波。地震波是一种复合波。描述波的物理量：波长λ、波速v、频率f<br>频率：波的频率就是波源的振动频率，也是所有质点的振动频率。是单位时间内完成周期振动的次数<br>波速：波在均匀介质中匀速传播的速率只与介质有关，而与频率无关。<br>波长：在波动中振动相位总是相同的两个相邻质点间的距离。对于横波，相邻的两个波峰或相邻的两个波谷之间的距离等于一个波长。  </p>
+<p>它们三者的关系是：v&#x3D;λf</p>
+<img src="/2024/10/25/fdtd/wave.jpg" class="" title="机械波">
+
+<p>波具有干涉、衍射、偏振、折射、反射等现象。同时波还能传播能量。</p>
+<h3 id="电磁波"><a href="#电磁波" class="headerlink" title="电磁波"></a>电磁波</h3><p>电磁波又叫电磁辐射，是指同相振荡且互相垂直的电场与磁场，是一种非机械波，在空间中以波的形式传递能量和动量，其传播方向垂直于电场与磁场的振荡方向是一种横波，和机械波一样，符合波理论。和机械波不同的是，它的传播不需要介质，在真空中也能传播。现代量子场论中光子被认为是电磁相互作用的媒介子。 光子静止质量为零。光子以光速运动，并具有能量、动量、质量。光具有波粒二象性</p>
+<img src="/2024/10/25/fdtd/wave-e.png" class="" title="电磁波">
+
+<p>电磁波的波长和频率有关系：c&#x3D;λf，其中c是光速，约等于3×10^8m&#x2F;s。电磁辐射由低频率到高频率主要分为：无线电波、微波、红外线、可见光、紫外线、X射线和γ射线。人眼可接收到的电磁波，称为可见光（波长380~780nm）</p>
+<img src="/2024/10/25/fdtd/wave-spectrum.png" class="" title="spectrum">
+
+<p>在电动力学里，根据麦克斯韦方程组，随着时间变化的电场产生了磁场，反之亦然。因此，一个振荡中的电场会产生振荡的磁场，而一个振荡中的磁场又会产生振荡的电场，这样子，这些连续不断同相振荡的电场和磁场共同地形成了电磁波。电场，磁场都遵守叠加原理。因为电场和磁场都是矢量场，所有的电场矢量和磁场矢量都适合做矢量加运算。例如，一个行进电磁波，入射于一个介质，会引起介质内的电子振荡，因而使得它们自己也发射电磁波，因而造成折射或衍射等等现象。电碰波的能量一半存于电场，一半存于磁场。比如我们可以使用电场天线和磁场天线来“感知”电磁波中的电场和磁场</p>
+<h3 id="麦克斯韦方程组"><a href="#麦克斯韦方程组" class="headerlink" title="麦克斯韦方程组"></a>麦克斯韦方程组</h3><p>麦克斯韦方程组有微分和积分表示，但等价。并且真空和介质略有不同，积分形式更容易理解一些，下边以真空中的麦克斯韦方程来了解。</p>
+<ol>
+<li>高斯定律, 描述通过任意闭曲面的电通量与这闭曲面内的电荷之间的关系。</li>
+</ol>
+<p>$$<br> \displaystyle \oiint _\mathbb{S} \mathbf {E} \cdot \mathrm {d} \mathbf {s} &#x3D;{\frac {Q}{\varepsilon _{0}}}<br>$$</p>
+<ul>
+<li>Q: 闭曲面内的总电荷</li>
+<li>$\epsilon_0$是真空介电常数</li>
+<li>E: 电场强度</li>
+</ul>
+<p>可见电通量只与电荷有关，电场是有源场</p>
+<ol start="2">
+<li>高斯磁场定律, 描述通过任意闭曲面的磁通量等于零。</li>
+</ol>
+<p>$$<br>\displaystyle \oiint _\mathbb{S} \mathbf {B} \cdot \mathrm {d} \mathbf {s} &#x3D;0<br>$$</p>
+<ul>
+<li>B: 磁感应强度</li>
+</ul>
+<p>表明通过任意闭曲面的磁通量等于零，磁场是无源场，不存在单极子</p>
+<ol start="3">
+<li>法拉第电磁感应定律：时变磁场产生感应电场。</li>
+</ol>
+<p>$$<br>\displaystyle \oint _{\mathbb{L}} \mathbf {E} \cdot \mathrm {d} \mathbf {l} &#x3D;-{\frac {\mathrm {d} }{\mathrm {d} t}}\iint _\mathbb{S} \mathbf {B} \cdot \mathrm {d} \mathbf {s} &#x3D;-{\frac {\mathrm {d} \Phi _{\mathbf {B} }}{\mathrm{d} t}}<br>$$ </p>
+<p>表明电动势(V)是磁通量的变化引起</p>
+<ol>
+<li>麦克斯韦-安培定律：磁场可以通过以下两种方法产生：一种是靠传导电流（原本的安培定律），另一种是靠时变电场，称位移电流（麦克斯韦修正项）</li>
+</ol>
+<p>$$<br>{\displaystyle \oint _{\mathbb {L} }\ \mathbf {B} \cdot \mathrm {d} {\boldsymbol {\ell }&#x3D;\mu _{0}I+\mu _{0}\varepsilon _{0}{\frac {\mathrm{d} }{\mathrm {d} t}} \iint _\mathbb{S} \mathbf E \cdot \mathrm {d}s }&#x3D;\mu _{0}I+\mu _{0}\varepsilon _{0}{\frac {\mathrm{d} \Phi _{\mathbf {E} }}{\mathrm {d} t}}}<br>$$</p>
+<ul>
+<li>$\mu_0$是真空磁导率</li>
+</ul>
+<p>表明磁场环量由电流和电场的变化引起</p>
+<h4 id="电磁波的传播"><a href="#电磁波的传播" class="headerlink" title="电磁波的传播"></a>电磁波的传播</h4><p>通过一系列数学推导，可以得到真空中的波动方程：<br>$$<br>\begin{aligned}<br>% laplacian operator<br>\nabla ^{2} \mathbf {E} -{\frac {1}{c^{2}}}{\frac {\partial ^{2}\mathbf {E} }{\partial t^{2}}} &amp;&#x3D;0\<br>\nabla ^{2} \mathbf {B} -{\frac {1}{c^{2}}}{\frac {\partial ^{2}\mathbf {B} }{\partial t^{2}}} &amp;&#x3D;0<br> \end{aligned}<br>$$<br>称为双曲型偏微分方程，  其中</p>
+<ul>
+<li>$c&#x3D;\frac{1}{\sqrt{\mu_0\epsilon_0}}$是真空中的光速</li>
+<li>$\nabla^2$是拉普拉斯算子，在直角坐标系中是：<br>$$<br>\nabla ^{2} &#x3D;\left({\frac {\partial ^{2}}{\partial x^{2}}}+{\frac {\partial ^{2}}{\partial y^{2}}}+{\frac {\partial ^{2}}{\partial z^{2}}}\right)<br>$$<br>波动方程描述了波在时空中传播的规律。对平面波，它的一个解是：</li>
+</ul>
+<p>$$<br>\begin{align}<br>E &#x3D; E_0 \cos(\omega t - kr + \phi) \<br>H &#x3D; H_0 \cos(\omega t - kr + \phi)<br>\end{align}<br>$$<br>是和位置和时间有关的函数。</p>
+<p>对比经典力学中的机械波方程一致：<br>$$<br>\nabla ^{2} \psi -{\frac {1}{v^{2}}}{\frac {\partial ^{2}\psi }{\partial t^{2}}} &#x3D;0<br>$$<br>其中，$\psi$是波函数，v是波速  </p>
+<h4 id="麦克斯韦方程组的局限"><a href="#麦克斯韦方程组的局限" class="headerlink" title="麦克斯韦方程组的局限"></a>麦克斯韦方程组的局限</h4><p>因为麦克斯韦方程组完全不能表达光子的概念，任何涉及到单独光子的现象，例如光电效应、普朗克定律、单光子探测器、电磁场的量子纠缠等等，假若使用麦克斯韦方程组来解释，都会遇到困难。对于这些案例，必须用量子电动力学的理论来给予解释</p>
+<h3 id="FDTD-时域有限差分法"><a href="#FDTD-时域有限差分法" class="headerlink" title="FDTD(时域有限差分法)"></a>FDTD(时域有限差分法)</h3><p>在实际中，电磁波的传播是一个非常复杂的问题，需要考虑介质、边界和干涉问题，不能简单用平面简谐波计算，需要用数值方法来求解，FDTD是一种数值求解电磁波传播的方法，它是一种时域方法，通过离散化空间和时间，将麦克斯韦方程组转化为差分方程，然后通过迭代求解。<br>转换差分需要后两个方程就可以了，因为前两个方程是关于电场和磁场的分布，而后两个方程是关于电场和磁场的变化，是关于时间的。<br>中心差分是一种常用的差分方法，它是用前后两个点的值的平均值来估计中间点的值。对于一维情况，中心差分的公式是：<br>$$<br>\frac{\partial f}{\partial x} \approx \frac{f(x+\Delta x) - f(x-\Delta x)}{2\Delta x}<br>$$</p>
+<p>对时间和空间使用中心差分，可以得到麦克斯韦方程组的差分形式，简单起见，使用真空一维情况理解</p>
+<img src="/2024/10/25/fdtd/fdtd.jpg" class="" title="FDTD">
+
+<p>可见，其中的每一项都可由它的前两项推导而来。<br>E 是在全时间步上、全空间，B 是在半时间步，半空间上计算(为何这样设计？而不是反过来)。如下：</p>
+<img src="/2024/10/25/fdtd/fdtd-yee.png" class="" title="yee">
+
+<p>上述最简单的一维情况综合起来：<br>$$<br>\frac {\partial E_x}{\partial y} &#x3D; \frac{\partial B_z}{\partial t}<br>$$<br>在空间和时间上求解:<br>令<br>$$y &#x3D; j \Delta y, t &#x3D; n \Delta t$$<br>离散化空间和时间，可以得到：  </p>
+<img src="/2024/10/25/fdtd/fdtd2.jpg" class="" title="update formula">
+<p>整理可以得到磁场和电场的更新方程：<br>$$<br>B_z(j+\frac{1}{2}, n+\frac{1}{2}) &#x3D; B_z(j+\frac{1}{2}, n-\frac{1}{2}) + \frac{\Delta t}{\Delta y} (E_x(j+1, n) - E_x(j, n))<br>$$<br>$$<br>E_x(j, n+1) &#x3D; E_x(j, n) + \frac{\Delta t}{\Delta y} (B_z(j+\frac{1}{2}, n+\frac{1}{2}) - B_z(j-\frac{1}{2}, n+\frac{1}{2}))<br>$$</p>
+<p>可以写出 FDTD 的算法步骤：</p>
+<pre><code>initial field E, B by ??
+for n = 0, nmax
+    for j = 0, jmax-1
+        update B
+    end
+    for j = 0, jmax
+        update E
+    end
+end  
+</code></pre>
+</div><div class="article-licensing box"><div class="licensing-title"><p>FDTD(Finite-Difference Time-Domain)</p><p><a href="https://blogml.top/2024/10/25/fdtd/">https://blogml.top/2024/10/25/fdtd/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>BoostMerlin</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-10-25</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2025-12-25</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/fdtd/">fdtd</a><a class="link-muted mr-2" rel="tag" href="/tags/%E7%94%B5%E7%A3%81%E5%9C%BA/">电磁场</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2025/12/25/drive-sense-distance/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">从数学的角度判断车头距障碍的距离</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/02/18/bin_in_computer/"><span class="level-item">0.1 + 0.2 不等于 0.3</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.png" alt="Boost Merlin"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Boost Merlin</p><p class="is-size-6 is-block">Damn Coder</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China, Earth</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">7</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">25</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/boostmerlin" target="_blank" rel="me noopener">关注我</a></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/computer/"><span class="level-start"><span class="level-item">computer</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%85%B6%E5%AE%83/"><span class="level-start"><span class="level-item">其它</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"><span class="level-start"><span class="level-item">图形学</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%9F%BA%E7%A1%80/"><span class="level-start"><span class="level-item">基础</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="level-start"><span class="level-item">数据库</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%94%9F%E6%B4%BB/"><span class="level-start"><span class="level-item">生活</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B/"><span class="level-start"><span class="level-item">编程</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-12-25T12:01:22.000Z">2025-12-25</time></p><p class="title"><a href="/2025/12/25/drive-sense-distance/">从数学的角度判断车头距障碍的距离</a></p><p class="categories"><a href="/categories/%E5%85%B6%E5%AE%83/">其它</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-25T03:14:52.000Z">2024-10-25</time></p><p class="title"><a href="/2024/10/25/fdtd/">FDTD(Finite-Difference Time-Domain)</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-02-18T14:05:08.000Z">2023-02-18</time></p><p class="title"><a href="/2023/02/18/bin_in_computer/">0.1 + 0.2 不等于 0.3</a></p><p class="categories"><a href="/categories/%E5%9F%BA%E7%A1%80/">基础</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-02-10T07:42:14.000Z">2023-02-10</time></p><p class="title"><a href="/2023/02/10/mysql-index/">mysql建立索引时为什么要求区分度高？</a></p><p class="categories"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-01-17T12:51:38.000Z">2023-01-17</time></p><p class="title"><a href="/2023/01/17/ugui-anchor-and-canvas/">UGUI中的anchor和canvas(屏幕适配)</a></p><p class="categories"><a href="/categories/computer/">computer</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2025/12/"><span class="level-start"><span class="level-item">十二月 2025</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/10/"><span class="level-start"><span class="level-item">十月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/01/"><span class="level-start"><span class="level-item">一月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/10/"><span class="level-start"><span class="level-item">十月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/03/"><span class="level-start"><span class="level-item">三月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2021/05/"><span class="level-start"><span class="level-item">五月 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/12/"><span class="level-start"><span class="level-item">十二月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/08/"><span class="level-start"><span class="level-item">八月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/07/"><span class="level-start"><span class="level-item">七月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/11/"><span class="level-start"><span class="level-item">十一月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/09/"><span class="level-start"><span class="level-item">九月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/06/"><span class="level-start"><span class="level-item">六月 2018</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/02/"><span class="level-start"><span class="level-item">二月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/01/"><span class="level-start"><span class="level-item">一月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2017/12/"><span class="level-start"><span class="level-item">十二月 2017</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Shader/"><span class="tag">Shader</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Unity/"><span class="tag">Unity</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/bit/"><span class="tag">bit</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/bitwise-op/"><span class="tag">bitwise-op</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/dart/"><span class="tag">dart</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/db/"><span class="tag">db</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/encoding/"><span class="tag">encoding</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/exception/"><span class="tag">exception</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/fdtd/"><span class="tag">fdtd</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/flutter/"><span class="tag">flutter</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/go/"><span class="tag">go</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/golang/"><span class="tag">golang</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/mysql/"><span class="tag">mysql</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/python/"><span class="tag">python</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/reactivex/"><span class="tag">reactivex</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/unity/"><span class="tag">unity</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/utf8/"><span class="tag">utf8</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"><span class="tag">位运算</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%85%B6%E5%AE%83/"><span class="tag">其它</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="tag">数据分析</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%96%AD%E8%A8%80/"><span class="tag">断言</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><span class="tag">正则表达式</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%8E%AF%E8%A7%86/"><span class="tag">环视</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%94%B5%E7%A3%81%E5%9C%BA/"><span class="tag">电磁场</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%BD%A6%E8%B7%9D%E6%84%9F%E7%9F%A5/"><span class="tag">车距感知</span><span class="tag">1</span></a></div></div></div></div></div></div><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3"><!--!--></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/logo.svg" alt="雁过留声" height="28"></a><p class="is-size-7"><span>&copy; 2025 BoostMerlin</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><script type="text/javascript" id="MathJax-script" async>MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      },
+      chtml: {
+        matchFontHeight: false
+      }
+    };</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>0.1 + 0.2 不等于 0.3 - 雁过留声</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="雁过留声"><meta name="msapplication-TileImage" content="/images/logo.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="雁过留声"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="由于精度有限，浮点数不能在计算机中精确表示，这个问题甚至有一个网站：https:&amp;#x2F;&amp;#x2F;0.30000000000000004.com&amp;#x2F;   数字的二进制表示，在计算机课程中是基础，借此简单回顾总结下计算机中的数字表示，包括整数和浮点数"><meta property="og:type" content="blog"><meta property="og:title" content="0.1 + 0.2 不等于 0.3"><meta property="og:url" content="https://blogml.top/2023/02/18/bin_in_computer/"><meta property="og:site_name" content="雁过留声"><meta property="og:description" content="由于精度有限，浮点数不能在计算机中精确表示，这个问题甚至有一个网站：https:&amp;#x2F;&amp;#x2F;0.30000000000000004.com&amp;#x2F;   数字的二进制表示，在计算机课程中是基础，借此简单回顾总结下计算机中的数字表示，包括整数和浮点数"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://blogml.top/2023/02/18/bin_in_computer/2.jpg"><meta property="og:image" content="https://blogml.top/2023/02/18/bin_in_computer/3.png"><meta property="og:image" content="https://blogml.top/2023/02/18/bin_in_computer/1.jpg"><meta property="og:image" content="https://blogml.top/2023/02/18/bin_in_computer/4.png"><meta property="og:image" content="https://blogml.top/2023/02/18/bin_in_computer/5.jpg"><meta property="article:published_time" content="2023-02-18T14:05:08.000Z"><meta property="article:modified_time" content="2023-02-18T15:05:08.000Z"><meta property="article:author" content="BoostMerlin"><meta property="article:tag" content="bit"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://blogml.top/2023/02/18/bin_in_computer/2.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blogml.top/2023/02/18/bin_in_computer/"},"headline":"0.1 + 0.2 不等于 0.3","image":["https://blogml.top/2023/02/18/bin_in_computer/2.jpg","https://blogml.top/2023/02/18/bin_in_computer/3.png","https://blogml.top/2023/02/18/bin_in_computer/1.jpg","https://blogml.top/2023/02/18/bin_in_computer/4.png","https://blogml.top/2023/02/18/bin_in_computer/5.jpg"],"datePublished":"2023-02-18T14:05:08.000Z","dateModified":"2023-02-18T15:05:08.000Z","author":{"@type":"Person","name":"BoostMerlin"},"publisher":{"@type":"Organization","name":"雁过留声","logo":{"@type":"ImageObject","url":"https://blogml.top/images/logo.svg"}},"description":"由于精度有限，浮点数不能在计算机中精确表示，这个问题甚至有一个网站：https:&#x2F;&#x2F;0.30000000000000004.com&#x2F;   数字的二进制表示，在计算机课程中是基础，借此简单回顾总结下计算机中的数字表示，包括整数和浮点数"}</script><link rel="canonical" href="https://blogml.top/2023/02/18/bin_in_computer/"><link rel="icon" href="/images/logo.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/images/logo.svg" alt="雁过留声" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Works" href="https://works.blogml.top/"><i class="fa fa-tasks"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-02-18T14:05:08.000Z" title="2023/2/18 22:05:08">2023-02-18</time>发表</span><span class="level-item"><time dateTime="2023-02-18T15:05:08.000Z" title="2023/2/18 23:05:08">2023-02-18</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E5%9F%BA%E7%A1%80/">基础</a></span><span class="level-item">28 分钟读完 (大约4251个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">0.1 + 0.2 不等于 0.3</h1><div class="content"><p>由于精度有限，浮点数不能在计算机中精确表示，这个问题甚至有一个网站：<br><a target="_blank" rel="noopener" href="https://0.30000000000000004.com/">https://0.30000000000000004.com/</a>  </p>
+<p>数字的二进制表示，在计算机课程中是基础，借此简单回顾总结下计算机中的数字表示，包括整数和浮点数</p>
+<span id="more"></span>
+
+<h2 id="整数的二进制"><a href="#整数的二进制" class="headerlink" title="整数的二进制"></a>整数的二进制</h2><p>base 为k的k进制的十进制表示为：  </p>
+<p>N &#x3D; (a<sub>n-1</sub>a<sub>n-2</sub>…a<sub>1</sub>a<sub>0</sub>)<sub>k</sub> &#x3D; a<sub>n-1</sub> × k<sup>n-1</sup> + a<sub>n-2</sub> × k<sup>n-2</sup> + … + a<sub>1</sub> × k<sup>1</sup> + a<sub>0</sub> × k<sup>0</sup></p>
+<p>N 是一个十进制的数值且0 &lt;&#x3D; a<sub>i</sub> &lt; k</p>
+<p>11为10进制时：<br>(11)<sub>10</sub> &#x3D; 1 x 10<sup>1</sup> + 1 x 10<sup>0</sup><br>11为二进制时：<br>(11)<sub>2</sub> &#x3D; 1 x 2<sup>1</sup> + 1 x 2<sup>0</sup></p>
+<p>base在这里是一个隐含的意义，所以在计算机中经常通过增加前缀来表示这个信息：  </p>
+<pre><code>0x11   十六进制  
+0o11   八进制  
+0b11   二进制  
+</code></pre>
+<p>对一个整数可以通过<strong>取余除以base</strong>直到为0转换为k进制，比如10转化为二进制：  </p>
+<table>
+<thead>
+<tr>
+<th>商</th>
+<th>余数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10 ÷ 2 &#x3D; 5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5 ÷ 2 &#x3D; 2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2 ÷ 2 &#x3D; 1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1 ÷ 2 &#x3D; 0</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p>从上表可以看出，每次将商用2进行除法运算，得到商和余数。高位在下，低位在上，从下往上即可得到十进制数10的二进制表示为 1010。</p>
+<h3 id="负整数的二进制"><a href="#负整数的二进制" class="headerlink" title="负整数的二进制"></a>负整数的二进制</h3><p>计算机是按byte来进行寻址的，一个字节是8bit，int8, int16, int32, int64等它们都是2的n次方</p>
+<p>这里以int8为例，上边已经求出了+10的二进制为 1010，在int8中为：  </p>
+<pre><code>0000 1010
+</code></pre>
+<p>那负数呢，需要抽出一位来表示正负，也就是最高位，并且0为正，1为负，所以-10表示为：  </p>
+<pre><code>1000 1010
+</code></pre>
+<p>这就是负数的原码，但是计算机并没有直接存储原码，如果尝试在c++中通过如下代码打印：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//__int8 在windows中定义为char</span></span><br><span class="line">__int8 b = <span class="number">0b10001010</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b); <span class="comment">//-118</span></span><br></pre></td></tr></table></figure>
+<p>得到的并不是-10</p>
+<blockquote>
+<p>为什么符号位1表示负，而不是0表示负？</p>
+</blockquote>
+<h3 id="原码、反码、补码"><a href="#原码、反码、补码" class="headerlink" title="原码、反码、补码"></a>原码、反码、补码</h3><blockquote>
+<p>注意：原码、反码、补码的概念只对负数有实际意义，对于正数，原码、反码、补码都是一样的<br>不会有下边的操作，但也可以理解为，计算机中只有补码，只是正数的补码是它自身</p>
+</blockquote>
+<p>负数在计算机中使用补码表示，要求补码，先了解下反码。<br><em>反码</em>被定义为原码除<strong>符号位</strong>外其它按位取反  </p>
+<p><em>补码</em>求值方法为反码+1（注意这不是补码的定义），-10的补码为：</p>
+<p>对于-10：<br>原码: 1000 1010<br>反码: 1111 0101<br>补码: 1111 0110</p>
+<p>通过代码，这次打印出了-10  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__int8 b = <span class="number">0b11110110</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b); <span class="comment">//-10</span></span><br></pre></td></tr></table></figure>
+
+<p>对一个负数，如果得到它的二进制原码，可以通过如下方式快速求得补码（-0不适用，因为-0取反+1有溢出）：  </p>
+<pre><code>从右到左（低位到高）遇到第一个1不变，把1之后除符号位外的数字全部取反
+
+如果是正数的原码，求对应负数的补码，把负号位一起取反
+</code></pre>
+<p>而补码得到原码的话也是一模一样（-$2^n$不适用，它没有原码）：  </p>
+<pre><code>从右到左（低位到高）遇到第一个1不变，把1之后除符号位外的数字全部取反
+</code></pre>
+<p>所以对于<code>__int8 b = 0b10001010;</code> 它是补码的话，可以得到其原码为： 11110110，即  </p>
+<p>-(2^6 + 2^5 + 2^4 + 2^2 + 2^1) &#x3D; -(64 + 32 + 16 + 4 + 2) &#x3D; -118</p>
+<table>
+<thead>
+<tr>
+<th>负数</th>
+<th>原码</th>
+<th>反码</th>
+<th>补码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-10</td>
+<td>1000 1010</td>
+<td>1111 0101</td>
+<td>1111 0110</td>
+</tr>
+<tr>
+<td>-118</td>
+<td>1111 0110</td>
+<td>1000 1001</td>
+<td>1000 1010</td>
+</tr>
+<tr>
+<td>-64</td>
+<td>1100 0000</td>
+<td>1011 1111</td>
+<td>1100 0000</td>
+</tr>
+</tbody></table>
+<p>有意思的是-64的补码和原码是一样的！</p>
+<h4 id="补码的作用"><a href="#补码的作用" class="headerlink" title="补码的作用"></a>补码的作用</h4><ol>
+<li>统一+0、-0表示<br>如果只用原码，+0 &#x3D; 0000 0000， -0 &#x3D; 1000 0000，有2种不同的表示法<br>如果用补码表示：<br>+0 &#x3D; 0000 0000，-0 &#x3D; 1111 1111 + 1 &#x3D; 0000 0000 （溢出了）</li>
+<li>减法可以表示为加法<br>a-b &#x3D; a + (-b)，但是如果用原码运算会得到如下情况，比如 1 + (-1)：<br>0000 0001 + 1000 0001 &#x3D; 1000 0010 &#x3D; -2???</li>
+</ol>
+<blockquote>
+<p>思考，这于这个加法，如果用反码怎么求？</p>
+</blockquote>
+<p>所以对于负数，得使用专门的减法逻辑，补码解决了这个问题：<br>0000 0001 + 1111 1111 &#x3D; 0000 0000 &#x3D; 0</p>
+<p>所以这个原理是什么？补码的本质是什么？  </p>
+<h4 id="模和同余的思想"><a href="#模和同余的思想" class="headerlink" title="模和同余的思想"></a>模和同余的思想</h4><ul>
+<li><p>对于长度为n的数组，如果使下标不越界？我们会取余 i % n 使得它位于0 到 n-1之间，即<br>1 % n &#x3D;&#x3D; (n+1) % n，这里n称为模，表示这个数组的容量</p>
+</li>
+<li><p>对于时钟（12小时制），现在指针在6点，再过多久指针会停留在12点？我们可以往前拨6个小时，也可以往后拨动6个小时，即6-6 % 12 &#x3D; 6+6 % 12，即往前往后的效果是一样的。时钟的0&#x3D;12点，它们刚好相差一个模的大小。看上面的公式，6-6 % 12 &#x3D; 6+6 % 12，<br>6-4 % 12 &#x3D; 6+8 % 12。<br>即<em>减去一个数，等价于加上一个数，这2个数相加可以整除模</em>，这样就把减法转化成了加法，这样其实不需要引入负数，也不需要特别的符号位，只要在所有位上直接做加法运算，溢出的位舍去就行了。</p>
+</li>
+</ul>
+<p>以8bit数为例，计算<code>12-10 = 2</code>，计算机不能直接计算-10，从上边可以知道-10可以变成加上一个数，使得12-10和12+x<strong>同余</strong>，对于个8位的数，其模为2<sup>8</sup> &#x3D; 256，x &#x3D; 256 - 10 &#x3D; 246，把246转化为二进制为：1111 0110，做加法舍去溢出后，结果是一样的，如下表格对比：  </p>
+<table>
+<thead>
+<tr>
+<th>减法</th>
+<th>加法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0000 1100</td>
+<td>0000 1100</td>
+</tr>
+<tr>
+<td>0000 1010(10)</td>
+<td>1111 0110(246)</td>
+</tr>
+<tr>
+<td>0000 0010</td>
+<td>0000 0010</td>
+</tr>
+</tbody></table>
+<p>可以发现，1111 0110正是-10的补码。对于一个8位的数，可得：<br>原码+反码+1 &#x3D; 1111 1111 + 1 &#x3D; 1 0000 0000 &#x3D; 256 刚好是8位的模，补码&#x3D;反码+1</p>
+<h3 id="最大整数和最小整数"><a href="#最大整数和最小整数" class="headerlink" title="最大整数和最小整数"></a>最大整数和最小整数</h3><blockquote>
+<p>为什么8位有符号整个的范围是-128<del>127？而不是-127</del>127？</p>
+</blockquote>
+<p>limits.h中定义了整数的表示范围</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> _I8_MIN     (-127i8 - 1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _I8_MAX       127i8</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _UI8_MAX      0xffui8</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _I16_MIN    (-32767i16 - 1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _I16_MAX      32767i16</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _UI16_MAX     0xffffui16</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _I32_MIN    (-2147483647i32 - 1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _I32_MAX      2147483647i32</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _UI32_MAX     0xffffffffui32</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _I64_MIN    (-9223372036854775807i64 - 1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _I64_MAX      9223372036854775807i64</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _UI64_MAX     0xffffffffffffffffui64</span></span><br></pre></td></tr></table></figure>
+
+<p>对于无符号数，最小为全0，最大为全1；对于有符号整个，符号位占用一位，同样以8位为例</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">最小值</th>
+<th align="center">最大值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>无符号</td>
+<td align="center">0000 0000</td>
+<td align="center">1111 1111</td>
+</tr>
+<tr>
+<td>十进制</td>
+<td align="center">0</td>
+<td align="center">255</td>
+</tr>
+<tr>
+<td>有符号</td>
+<td align="center">1000 0000</td>
+<td align="center">0111 1111</td>
+</tr>
+<tr>
+<td>十进制</td>
+<td align="center">-128</td>
+<td align="center">127</td>
+</tr>
+</tbody></table>
+<p>如果用原码表示，负数的最大值为1111 1111 &#x3D; -127，-128无法表示。-127到127之间共255个数，但是模有256个数，多的这个数即-0，1000 0000，在补码里为-128，在无符号数里是128</p>
+<p>-128 &#x3D; -127 - 1<br>即补码相加：<br>1000 0001 + 1111 1111 &#x3D; 1000 0000</p>
+<h3 id="大端（big-endian）和小端（little-endian）"><a href="#大端（big-endian）和小端（little-endian）" class="headerlink" title="大端（big endian）和小端（little endian）"></a>大端（big endian）和小端（little endian）</h3><p>分为机器的大小端和网络字节顺序的大小端，原理相似</p>
+<h4 id="高位和低位，高地址和低地址"><a href="#高位和低位，高地址和低地址" class="headerlink" title="高位和低位，高地址和低地址"></a>高位和低位，高地址和低地址</h4><p>对于一个数，权重高的为高位，权重低的为低位，如16位整数0xABCDEF，AB为高位，CD为低位；对于内存地址，地址大的是高地址，地址小的为低地址，即有ph &#x3D; pl + offset。</p>
+<table>
+<thead>
+<tr>
+<th>内存地址</th>
+<th align="center">big endian</th>
+<th align="center">little endian</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x0000</td>
+<td align="center">AB</td>
+<td align="center">EF</td>
+</tr>
+<tr>
+<td>0x0001</td>
+<td align="center">CD</td>
+<td align="center">CD</td>
+</tr>
+<tr>
+<td>0x0002</td>
+<td align="center">EF</td>
+<td align="center">AB</td>
+</tr>
+</tbody></table>
+<p>如何验证机器是大端还是小端？</p>
+<p>c++:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="type">char</span>* p = (<span class="type">char</span>*)&amp;a;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;little? %s \n&quot;</span>, *p == <span class="number">1</span> ? <span class="string">&quot;yes&quot;</span> : <span class="string">&quot;no&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>python</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.byteorder</span><br><span class="line"><span class="string">&#x27;little&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> array</span><br><span class="line"><span class="comment"># 一个short型的数组</span></span><br><span class="line">a = array.array(<span class="string">&#x27;h&#x27;</span>, [<span class="number">0x1</span>])</span><br><span class="line"><span class="built_in">print</span>(a.tobytes()[<span class="number">0</span>] == <span class="number">1</span> <span class="keyword">and</span> <span class="string">&quot;little&quot;</span> <span class="keyword">or</span> <span class="string">&quot;big&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="网络字节顺序"><a href="#网络字节顺序" class="headerlink" title="网络字节顺序"></a>网络字节顺序</h4><p>网络字节顺序NBO（Network Byte Order）：网络字节顺序规定在传输数据时，先传输高位字节，后传输低位字节，即“大端字节序”（Big-Endian）。比如传输0xABCD，先传输AB，再传输CD。</p>
+<p>一般intel机器都小端，发送数据时，需要将本地字节顺序转换网络字节顺序，接收时，再将网络字节顺序转换为本地字节顺序。</p>
+<h2 id="浮点数表示"><a href="#浮点数表示" class="headerlink" title="浮点数表示"></a>浮点数表示</h2><p>浮点数用于在计算机中表示小数，资料也非常多了，浮点数是一种科学计数法，即  </p>
+<p>N &#x3D; m * base<sup>e</sup></p>
+<ul>
+<li>m 称为有效数，它表示了数值的精度，1 &lt;&#x3D; m &lt; base  </li>
+<li>base 为进制  </li>
+<li>e 称为指数，决定了数值的大小</li>
+</ul>
+<p>对于10进制数123用科学计算法可以表示为:<br>123 &#x3D; 1.23 * 10<sup>2</sup></p>
+<p>计算机中浮点数的标准为IEEE754，是各大编程语言和硬件使用的标准</p>
+<p>F &#x3D; (-1)<sup>s</sup> <em>m</em> 2<sup>e</sup></p>
+<p>s是符号位，m是尾数，e是指数位,base固定为2，所以浮点数的表示只需要约定这三位即可。符号位是固定1位</p>
+<h3 id="定点数"><a href="#定点数" class="headerlink" title="定点数"></a>定点数</h3><p>在说浮点数之前，先了解一下定点数，<em>定点数</em>指约定小数点的位置。比如在8位里，可以约定第1位表示符号，3位表示整数，最后4位表示表示小数位。一个数可以拆分成整数+小数。  </p>
+<img src="/2023/02/18/bin_in_computer/2.jpg" class="" title="alt">
+<p>在原码表示法中<br>将小数转为二进制使用<strong>乘base取整</strong>法，比如将0.125转为二进制: 0.001 (1x2<sup>-3</sup>)</p>
+<table>
+<thead>
+<tr>
+<th>积</th>
+<th>整数位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.125*2&#x3D;0.25</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0.25*2 &#x3D; 0.5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0.5*2 &#x3D; 1.0</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p>一些数的原码表示：</p>
+<img src="/2023/02/18/bin_in_computer/3.png" class="" title="alt">
+
+<p>可见，在8位定点数中，$\pi$ &#x3D; 3.14159 因为精度问题无法准确表示，只能近似表示为3.125，因为小数位无法表示所有的实数，实数是连续的，但是二进制表示不是连续的。</p>
+<ul>
+<li>整数位越大，数值范围越大，但是精度越低；小数位越大，精度越高，但是范围越小。这点在浮点数也有类似的规律</li>
+<li>每一个小数，其实都有一个等效的整数。比如1.5 等效整数为 12， 即$1.5*2^3$，3即为小数位数。在不考虑小数点位置情况下，1.100 &lt;&lt; 3 &#x3D; 1100(B) &#x3D; 12(D)</li>
+</ul>
+<blockquote>
+<p>通过$x * 2^n$,n为小数位数，可以快速求得x的等效数</p>
+</blockquote>
+<h3 id="单精度浮点数"><a href="#单精度浮点数" class="headerlink" title="单精度浮点数"></a>单精度浮点数</h3><p>单精度用32位（4字节）表示，最高位为符号位，e 为8 bits，m 为23 bits，如下：</p>
+<img src="/2023/02/18/bin_in_computer/1.jpg" class="" title="alt">
+<p>0.15625的浮点数怎么来的？</p>
+<ol>
+<li><p>转化为定点二进制：0.15625 * 2<sup>5</sup> &#x3D; 5.0 &#x3D; 0.00101 &#x3D; 1.01 x 2<sup>-3</sup></p>
+</li>
+<li><p>符号位 0，e &#x3D; -3, m &#x3D; 1.01，因为规范化（normal number）之后，m的首位总是1，所以作为约定可以舍去，尾数其实比实际的多 1 位，也就是说单精度的尾数是 24 位。这样尾数部分是01</p>
+</li>
+<li><p>指数有正、有负，并没有直接用补码表示。为避免使用符号位，用移码来表示。以e&#x3D;8为例，它的取值范围为0~255，IEEE 754规定，e的真实值必须再减去一个中间数，对于8位的E，这个中间数是127，x - 127 &#x3D; -3, 则x&#x3D;124&#x3D;01111100，这个为指数部分。</p>
+<p> 对于n位的指数来说，阶码：2<sup>e-1</sup> - 1 为0</p>
+</li>
+</ol>
+<p>所以整个内存表示是：0 01111100 01000000000000000000000，可以通过下边程序验证</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> f = <span class="number">0.15625f</span>;</span><br><span class="line"><span class="type">int</span> d = *(<span class="type">int</span>*)&amp;f;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;d = %d\n&quot;</span>, d); <span class="comment">//1042284544</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="built_in">sizeof</span>(<span class="type">int</span>) * <span class="number">8</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;%d%s&quot;</span>, d &gt;&gt; i &amp; <span class="number">0x1</span>, i == <span class="number">31</span> || i == <span class="number">31</span><span class="number">-8</span> ? <span class="string">&quot; &quot;</span>: <span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">//0 01111100 01000000000000000000000</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么不使用补码？补码有什么问题？<br>移码通过加上一个固定的偏移，去掉符号位，相对大小不变，更利于比较大小，便于对阶，即把较小的阶对齐较大的阶，方便加法运算</p>
+<p>  -1 补码 &#x3D; 1 111 1111<br>   1 补码 &#x3D; 0 000 0001</p>
+<p>-1 &lt; 1 但是按位比较 1 111 1111 &gt; 0 000 0001，结果不对</p>
+<p>-1 移码 &#x3D; 0 111 1111<br> 1 移码 &#x3D; 1 000 0001</p>
+<p> 比较结果正确</p>
+<blockquote>
+<p>移码快速计算：补码+2<sup>n-1</sup>，即最高符号位取反</p>
+</blockquote>
+<p>值得注意的，浮点数阶码中使用的偏置是<em>2<sup>n-1</sup> - 1</em>而不是<em>2<sup>n-1</sup></em>。在8位中是127而不是128，11位的双精度浮点数中是1023而不是1024。所以有：</p>
+<ul>
+<li>阶码（E）&#x3D; [真值（e）]<sub>补</sub>+ 2<sup>n-1</sup> - 1 &#x3D; [真值]<sub>移</sub> - 1</li>
+<li>[真值（e）]<sub>补</sub> &#x3D; [阶码 + 1]<sub>移</sub> &#x3D;&gt; 真值（e）&#x3D; [真值（e）]<sub>补</sub><sub>补</sub></li>
+</ul>
+<blockquote>
+<p>想了一下阶码127问题，偏移为128时候也能表示数没有问题。但是范围和对称性和127不一样；可以结合非规格化数理解。</p>
+</blockquote>
+<h3 id="双精度浮点数"><a href="#双精度浮点数" class="headerlink" title="双精度浮点数"></a>双精度浮点数</h3><p>双精度浮点数用64位（8字节）表示，最高位为符号位，e 为 11 bits，m 为 52 bits，如下：</p>
+<img src="/2023/02/18/bin_in_computer/4.png" class="" title="alt">
+<p><font size=1>由<a target="_blank" rel="noopener" href="https://commons.wikimedia.org/w/index.php?curid=1843177">Fresheneesz</a>，CC BY-SA 3.0</font></p>
+<p>表示方法和逻辑一致，不再赘述</p>
+<h3 id="一些浮点数的问题"><a href="#一些浮点数的问题" class="headerlink" title="一些浮点数的问题"></a>一些浮点数的问题</h3><h4 id="阶码范围"><a href="#阶码范围" class="headerlink" title="阶码范围"></a>阶码范围</h4><p>阶码因为要表示负数，只有7位有效位，范围是0~127，所以偏移取127，<br>8位数范围应该在1~254范围，则阶码范围在-126~127之间<br>阶码有二类特殊情况：</p>
+<ol>
+<li>全为0，此时阶码最小<ul>
+<li>当尾数m全为0时表示0，根据符号位会有+0和-0两种表示法，但都是0。注意如果按规格化数计算 1.0 x 2<sup>-127</sup>，这个值不应该为0</li>
+<li>当尾数m不全为0时，这时用来表示<strong>非规格化浮点数</strong>， 且规定阶码为 0 - 127 + 1 &#x3D; -126，这样能与规格化浮点数连续。非规格化浮点数更靠近0且更密<blockquote>
+<p>当阶码全是 0，尾数部分不全为 0，尾数部分没有省略的前导 1，同时指数部分的偏移值比规范形式的偏移值小 1，即单精度是 -126，双精度是 -2046。这种形式的浮点数叫非规范化浮点数（denormal number）。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>全为1，此时阶码最大，e真值为128，超出127，表示无穷<ul>
+<li>当尾数m全为0时，表示无穷，根据符号位会有+infinity和-infinity两种表示法</li>
+<li>当尾数m不全为0时，即至少有一个1时，表示NaN</li>
+</ul>
+</li>
+</ol>
+<h4 id="浮点数的特殊值"><a href="#浮点数的特殊值" class="headerlink" title="浮点数的特殊值"></a>浮点数的特殊值</h4><p>float.h中的定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_EPSILON      2.2204460492503131e-016 <span class="comment">// smallest such that 1.0+DBL_EPSILON != 1.0</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_MANT_DIG     53                      <span class="comment">// # of bits in mantissa</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_MAX          1.7976931348623158e+308 <span class="comment">// max value</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_MAX_10_EXP   308                     <span class="comment">// max decimal exponent</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_MAX_EXP      1024                    <span class="comment">// max binary exponent</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_MIN          2.2250738585072014e-308 <span class="comment">// min positive value</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_MIN_10_EXP   (-307)                  <span class="comment">// min decimal exponent</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_MIN_EXP      (-1021)                 <span class="comment">// min binary exponent</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DBL_TRUE_MIN     4.9406564584124654e-324 <span class="comment">// min positive value</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_EPSILON      1.192092896e-07F        <span class="comment">// smallest such that 1.0+FLT_EPSILON != 1.0</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_MANT_DIG     24                      <span class="comment">// # of bits in mantissa</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_MAX          3.402823466e+38F        <span class="comment">// max value</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_MAX_10_EXP   38                      <span class="comment">// max decimal exponent</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_MAX_EXP      128                     <span class="comment">// max binary exponent</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_MIN          1.175494351e-38F        <span class="comment">// min normalized positive value</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_MIN_10_EXP   (-37)                   <span class="comment">// min decimal exponent</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_MIN_EXP      (-125)                  <span class="comment">// min binary exponent</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FLT_TRUE_MIN     1.401298464e-45F        <span class="comment">// min positive value</span></span></span><br></pre></td></tr></table></figure>
+
+<p>以32位为例：</p>
+<ul>
+<li><p>+0：0 00000000 0000 0000 0000 0000 0000 000<br>-0：1 00000000 0000 0000 0000 0000 0000 000<br>以非规格化数视角来看 0.0 x 2<sup>-126</sup> &#x3D; 0</p>
+</li>
+<li><p>规格化最小正数：0 00000001 0000 0000 0000 0000 0000 000</p>
+</li>
+</ul>
+<p>阶码为1，真值为1-127&#x3D;-126，+(1.0)×2<sup>−126</sup> &#x3D; 1.1754943508222875e-38</p>
+<ul>
+<li>规格化最大正数：0 11111110 1111 1111 1111 1111 1111 111</li>
+</ul>
+<p>阶码为254，真值为254-127&#x3D;127，+(1+x)×2<sup>127</sup>，其中<br>$$<br>x&#x3D;2^{-1} + 2^{-2} … + 2^{-23} &#x3D; \frac {1+2+4…2^{22}}{2^{23}} &#x3D; \frac {2^{23}-1} {2^{23}} &#x3D; 1-2^{-23}<br>$$</p>
+<p>最终结果为：2<sup>127</sup>*(2<sup>24</sup>-1)&#x2F;2<sup>23</sup> &#x3D; 3.4028234663852886e+38</p>
+<ul>
+<li><p>非规格化最小数(FLT_TRUE_MIN)：0 00000000 0000 0000 0000 0000 0000 001<br>非规格化的阶码真值为-126<br>$2^{-126}\times2^{-23} &#x3D; 1.401298464324817e-45$，这个数比规格化的更小，更靠近0</p>
+</li>
+<li><p>非规格化最大值：0 00000000 1111 1111 1111 1111 1111 111</p>
+</li>
+</ul>
+<p>$2^{-126}\times(1-2^{-23}) &#x3D; 1.1754942106924411e-38$，与规格化的最小值保持连续！！</p>
+<p>非规格化浮点数都 |x| &lt;&lt;&lt; 1，更靠近0</p>
+<ul>
+<li>负数将符号位取反即可，是对称的，最大负数：-1.1754943508222875e-38，最小负数：-4028234663852886e+38</li>
+</ul>
+<blockquote>
+<p>为什么FLT_MIN&#x3D;1.175494351e-38F，小数点后为9位？<br>因为FLT_MANT_DIG&#x3D;23+1， 2<sup>24</sup> - 1 &#x3D; 16777215（10进制）,有效位最多为8位。<br>验证 1.1754943e-38和1.1754944e-38的二进制表示和FLT_MIN是一样的</p>
+<img src="/2023/02/18/bin_in_computer/5.jpg" class="" title="alt">
+<p>FLT_MIN这个值已经超过FLOAT的最小精度了</p>
+</blockquote>
+<ul>
+<li>EPSILON</li>
+</ul>
+<p>EPSILON 表示浮点数可表示的大于1的最小数与1差值。对32位数来说：<br>0 01111111 0000 0000 0000 0000 0000 001，即$2^0\times(1+2^{-23}) &#x3D; 2^{-23} &#x3D; 1.1920928955078125e-7$</p>
+<ul>
+<li>符点数在实数轴上并不是均匀分布的，越靠近0越密，越往Infinity越稀，比如</li>
+</ul>
+<p>0 11111110 11111111111111111111111 - 0 11111110 11111111111111111111110 &#x3D; 2.028240960365167e+31！</p>
+<p>3.4028234663852886e+38 - 1 &#x3D;&#x3D;&#x3D; 3.4028234663852886e+38</p>
+<blockquote>
+<p>思考：64位浮点数的范围和精度是多少？</p>
+</blockquote>
+<h4 id="浮点数有小端、大端区分吗"><a href="#浮点数有小端、大端区分吗" class="headerlink" title="浮点数有小端、大端区分吗"></a>浮点数有小端、大端区分吗</h4><p>这个问题可转化为，在计算机内存中，低地址先存放的是尾数部分，还是符号和指数部分？<br>显然还是需要区分的，前面打印0.15625的二进制表示，过程是从最高位到最低打印，得到：0 01111100 01000000000000000000000。可知高地址存的是符号和指数，低地址存的是尾数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//在小端机器上，按内存地址从低到高打印浮点数</span></span><br><span class="line"><span class="type">float</span> v = <span class="number">0.15625f</span>;</span><br><span class="line">__int8* pv = reinterpret_cast&lt;__int8*&gt;(&amp; v);</span><br><span class="line"> <span class="comment">//00000000000000000010000000111110</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">sizeof</span>(v); ++i) &#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;<span class="number">8</span>&gt;(*(pv+i)); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//将00111110 00100000 00000000 00000000按8位一组反过来将得到：</span></span><br><span class="line"> <span class="comment">//00000000 00000000 00100000 00111110</span></span><br><span class="line"> <span class="comment">//低地址先存的尾数位</span></span><br></pre></td></tr></table></figure>
+<p>网络传输时，可以把浮点数当成一个等效的整数（即内存表示一样的整数）进行大小端转换。</p>
+<h3 id="0-1-0-2-0-30000000000000004"><a href="#0-1-0-2-0-30000000000000004" class="headerlink" title="0.1 + 0.2 &#x3D; 0.30000000000000004"></a>0.1 + 0.2 &#x3D; 0.30000000000000004</h3><p>总结原因有2点：</p>
+<ol>
+<li><p>0.1和0.2 在二进制中无法精确表示，尾数部分会在0011上循环<br>0.1:0 01111011 10011001100110011001101:0.10000000149011611938476562<br>0.2:0 01111100 10011001100110011001101:0.20000000298023223876953125<br>和为<br>0.30000000447034836</p>
+</li>
+<li><p>符点数加法对进行对阶操作，会使尾数右移。进一步损失精度</p>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;0.1 + 0.2= %.17lf\n&quot;</span>, <span class="number">0.1</span> + <span class="number">0.2</span>); <span class="comment">//0.30000000000000004</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;0.1 + 0.2= %.17lf\n&quot;</span>, <span class="number">0.1f</span> + <span class="number">0.2f</span>); <span class="comment">//0.30000001192092896</span></span><br></pre></td></tr></table></figure>
+<p>注意这里不同精度下计算结果不一样，且与直接用十进制值验证的结果也不一样。说明运算过程中是有精度损失的。<br>0.30000000000000004这个是在双精度浮点数中相加才会出现的结果。</p>
+<h4 id="0-1-0-2双精度浮点数相加动手验证一下"><a href="#0-1-0-2双精度浮点数相加动手验证一下" class="headerlink" title="0.1+0.2双精度浮点数相加动手验证一下"></a>0.1+0.2双精度浮点数相加动手验证一下</h4><p>0.1:0 01111111011 1.1001100110011001100110011001100110011001100110011010<br>0.2:0 01111111100 1.1001100110011001100110011001100110011001100110011010</p>
+<p>0.1 指数为1019，0.2为1020，需要对阶，0.1指数变为1020，尾数右移一位：<br>0.1:0 01111111100 0.1100110011001100110011001100110011001100110011001101<br>0.2:0 01111111100 1.1001100110011001100110011001100110011001100110011010</p>
+<p>0.3:0 01111111100 10.0110011001100110011001100110011001100110011001100111</p>
+<p>10.0110011001100110011001100110011001100110011001100111 * 2<sup>1020-1023</sup> &#x3D; 0b100110011001100110011001100110011001100110011001100111 * 2<sup>-3-52</sup></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0b100110011001100110011001100110011001100110011001100111</span> * <span class="number">2</span> **(-<span class="number">3</span>-<span class="number">52</span>)</span><br><span class="line"><span class="number">0.30000000000000004</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[IEEE 754] <a target="_blank" rel="noopener" href="https://babbage.cs.qc.cuny.edu/IEEE-754.old/IEEE-754references.html">https://babbage.cs.qc.cuny.edu/IEEE-754.old/IEEE-754references.html</a><br>[wiki] <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%B5%AE%E7%82%B9%E6%95%B0">https://zh.wikipedia.org/wiki/%E6%B5%AE%E7%82%B9%E6%95%B0</a><br><a target="_blank" rel="noopener" href="https://baseconvert.com/ieee-754-floating-point">baseconvert</a></p>
+</blockquote>
+</div><div class="article-licensing box"><div class="licensing-title"><p>0.1 + 0.2 不等于 0.3</p><p><a href="https://blogml.top/2023/02/18/bin_in_computer/">https://blogml.top/2023/02/18/bin_in_computer/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>BoostMerlin</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-02-18</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-02-18</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/bit/">bit</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2024/10/25/fdtd/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">FDTD(Finite-Difference Time-Domain)</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/02/10/mysql-index/"><span class="level-item">mysql建立索引时为什么要求区分度高？</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/images/avatar.png" alt="Boost Merlin"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Boost Merlin</p><p class="is-size-6 is-block">Damn Coder</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China, Earth</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">7</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">25</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/boostmerlin" target="_blank" rel="me noopener">关注我</a></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/computer/"><span class="level-start"><span class="level-item">computer</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%85%B6%E5%AE%83/"><span class="level-start"><span class="level-item">其它</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"><span class="level-start"><span class="level-item">图形学</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%9F%BA%E7%A1%80/"><span class="level-start"><span class="level-item">基础</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="level-start"><span class="level-item">数据库</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%94%9F%E6%B4%BB/"><span class="level-start"><span class="level-item">生活</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%BC%96%E7%A8%8B/"><span class="level-start"><span class="level-item">编程</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-12-25T12:01:22.000Z">2025-12-25</time></p><p class="title"><a href="/2025/12/25/drive-sense-distance/">从数学的角度判断车头距障碍的距离</a></p><p class="categories"><a href="/categories/%E5%85%B6%E5%AE%83/">其它</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-25T03:14:52.000Z">2024-10-25</time></p><p class="title"><a href="/2024/10/25/fdtd/">FDTD(Finite-Difference Time-Domain)</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-02-18T14:05:08.000Z">2023-02-18</time></p><p class="title"><a href="/2023/02/18/bin_in_computer/">0.1 + 0.2 不等于 0.3</a></p><p class="categories"><a href="/categories/%E5%9F%BA%E7%A1%80/">基础</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-02-10T07:42:14.000Z">2023-02-10</time></p><p class="title"><a href="/2023/02/10/mysql-index/">mysql建立索引时为什么要求区分度高？</a></p><p class="categories"><a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-01-17T12:51:38.000Z">2023-01-17</time></p><p class="title"><a href="/2023/01/17/ugui-anchor-and-canvas/">UGUI中的anchor和canvas(屏幕适配)</a></p><p class="categories"><a href="/categories/computer/">computer</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2025/12/"><span class="level-start"><span class="level-item">十二月 2025</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/10/"><span class="level-start"><span class="level-item">十月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/02/"><span class="level-start"><span class="level-item">二月 2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/01/"><span class="level-start"><span class="level-item">一月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/12/"><span class="level-start"><span class="level-item">十二月 2022</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/10/"><span class="level-start"><span class="level-item">十月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/03/"><span class="level-start"><span class="level-item">三月 2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2021/05/"><span class="level-start"><span class="level-item">五月 2021</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/12/"><span class="level-start"><span class="level-item">十二月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/08/"><span class="level-start"><span class="level-item">八月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2020/07/"><span class="level-start"><span class="level-item">七月 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2019/11/"><span class="level-start"><span class="level-item">十一月 2019</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/09/"><span class="level-start"><span class="level-item">九月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/06/"><span class="level-start"><span class="level-item">六月 2018</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/02/"><span class="level-start"><span class="level-item">二月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2018/01/"><span class="level-start"><span class="level-item">一月 2018</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2017/12/"><span class="level-start"><span class="level-item">十二月 2017</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Shader/"><span class="tag">Shader</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Unity/"><span class="tag">Unity</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/bit/"><span class="tag">bit</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/bitwise-op/"><span class="tag">bitwise-op</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/dart/"><span class="tag">dart</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/db/"><span class="tag">db</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/encoding/"><span class="tag">encoding</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/exception/"><span class="tag">exception</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/fdtd/"><span class="tag">fdtd</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/flutter/"><span class="tag">flutter</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/go/"><span class="tag">go</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/golang/"><span class="tag">golang</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/mysql/"><span class="tag">mysql</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/python/"><span class="tag">python</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/reactivex/"><span class="tag">reactivex</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/unity/"><span class="tag">unity</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/utf8/"><span class="tag">utf8</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"><span class="tag">位运算</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%85%B6%E5%AE%83/"><span class="tag">其它</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="tag">数据分析</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%96%AD%E8%A8%80/"><span class="tag">断言</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><span class="tag">正则表达式</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%8E%AF%E8%A7%86/"><span class="tag">环视</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%94%B5%E7%A3%81%E5%9C%BA/"><span class="tag">电磁场</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%BD%A6%E8%B7%9D%E6%84%9F%E7%9F%A5/"><span class="tag">车距感知</span><span class="tag">1</span></a></div></div></div></div></div></div><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3"><!--!--></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/images/logo.svg" alt="雁过留声" height="28"></a><p class="is-size-7"><span>&copy; 2025 BoostMerlin</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><script type="text/javascript" id="MathJax-script" async>MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      },
+      chtml: {
+        matchFontHeight: false
+      }
+    };</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
